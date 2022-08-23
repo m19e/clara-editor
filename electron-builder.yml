@@ -1,6 +1,6 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.m19e.clara
+productName: Clara Editor Lexical
+copyright: Copyright © 2022 m19e
 directories:
   output: dist
   buildResources: resources
