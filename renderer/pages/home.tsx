@@ -1,6 +1,7 @@
 import React from "react"
 import Head from "next/head"
-import Link from "next/link"
+
+import { Editor } from "@/components/organisms/Editor"
 
 function Home() {
   return (
@@ -8,7 +9,8 @@ function Home() {
       <Head>
         <title>Home - Nextron (with-typescript-tailwindcss)</title>
       </Head>
-      <div className="grid-col-1 grid w-full text-center text-2xl">
+      <Editor />
+      {/* <div className="grid-col-1 grid w-full text-center text-2xl">
         <img className="mx-auto" src="/images/logo.png" />
         <span>⚡ Electron ⚡</span>
         <span>+</span>
@@ -22,7 +24,7 @@ function Home() {
         <Link href="/next">
           <a className="btn-blue">Go to next page</a>
         </Link>
-      </div>
+      </div> */}
     </React.Fragment>
   )
 }
