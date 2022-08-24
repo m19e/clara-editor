@@ -4,6 +4,8 @@ import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
 
+import { VerticalPlugin } from "@/components/plugins/VerticalPlugin"
+
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
   namespace: "ClaraEditor",
   onError: (error) => console.error(error),
@@ -18,6 +20,7 @@ export const Editor: FC = () => {
           placeholder={<Placeholder />}
         />
       </div>
+      <VerticalPlugin />
     </LexicalComposer>
   )
 }
