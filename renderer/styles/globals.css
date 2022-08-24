@@ -1,7 +1,17 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Write your own custom base styles here */
 
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+/* Write your own custom component styles here */
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+/* Your own custom utilities */
 .writing-v-rl {
   writing-mode: vertical-rl;
 }
