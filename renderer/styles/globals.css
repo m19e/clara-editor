@@ -17,7 +17,7 @@
     @apply relative p-6 min-h-[240px];
   }
 
-  .contentEditable {
+  .content-editable {
     @apply outline-none;
   }
 
