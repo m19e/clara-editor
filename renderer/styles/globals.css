@@ -12,4 +12,16 @@
   .btn-blue {
     @apply text-white font-bold px-4 py-2 rounded bg-blue-600 hover:bg-blue-500;
   }
+
+  .vertical-editor {
+    @apply relative p-6 min-h-[240px];
+  }
+
+  .contentEditable {
+    @apply outline-none;
+  }
+
+  .placeholder {
+    @apply absolute text-gray-500 top-6 left-6 pointer-events-none select-none;
+  }
 }
