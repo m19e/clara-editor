@@ -3,6 +3,7 @@ import type { ComponentProps, FC } from "react"
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 
 import { VerticalPlugin } from "@/components/plugins/VerticalPlugin"
 
@@ -20,6 +21,7 @@ export const Editor: FC = () => {
           placeholder={<Placeholder />}
         />
       </div>
+      <HistoryPlugin />
       <VerticalPlugin />
     </LexicalComposer>
   )
