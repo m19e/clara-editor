@@ -4,6 +4,7 @@ import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
+import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin"
 
 import { VerticalPlugin } from "@/components/plugins/VerticalPlugin"
 
@@ -21,6 +22,7 @@ export const Editor: FC = () => {
           placeholder={<Placeholder />}
         />
       </div>
+      <AutoFocusPlugin defaultSelection="rootEnd" />
       <HistoryPlugin />
       <VerticalPlugin />
     </LexicalComposer>
