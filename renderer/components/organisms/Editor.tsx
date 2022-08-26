@@ -3,11 +3,13 @@ import type { ComponentProps, FC, WheelEvent } from "react"
 
 import { Drawer } from "react-daisyui"
 
+import { $getRoot } from "lexical"
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin"
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
@@ -84,6 +86,17 @@ export const Editor: FC = () => {
       <AutoHorizontalScrollPlugin scrollRef={containerRef} />
       <HistoryPlugin />
       <VerticalPlugin />
+      <OnChangePlugin
+        onChange={(state) =>
+          console.log(
+            state.read(
+              () => $getRoot().getTextContent().replace(/\n/g, "").length
+            )
+          )
+        }
+        ignoreInitialChange
+        ignoreSelectionChange
+      />
     </LexicalComposer>
   )
 }
