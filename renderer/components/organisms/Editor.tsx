@@ -18,7 +18,9 @@ export const Editor: FC = () => {
     <LexicalComposer initialConfig={initialConfig}>
       <div className="vertical-editor">
         <PlainTextPlugin
-          contentEditable={<ContentEditable className="content-editable" />}
+          contentEditable={
+            <ContentEditable className="h-full min-w-full font-serif focus:outline-none" />
+          }
           placeholder={<Placeholder />}
         />
       </div>
@@ -30,5 +32,9 @@ export const Editor: FC = () => {
 }
 
 const Placeholder: FC = () => {
-  return <div className="placeholder">執筆を始める</div>
+  return (
+    <div className="pointer-events-none absolute top-6 left-6 select-none text-gray-500">
+      執筆を始める
+    </div>
+  )
 }
