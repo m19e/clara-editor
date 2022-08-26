@@ -10,6 +10,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin"
 
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
+import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
 
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
   namespace: "ClaraEditor",
@@ -80,6 +81,7 @@ export const Editor: FC = () => {
         </div>
       </Drawer>
       <AutoFocusPlugin defaultSelection="rootEnd" />
+      <AutoHorizontalScrollPlugin scrollRef={containerRef} />
       <HistoryPlugin />
       <VerticalPlugin />
     </LexicalComposer>
