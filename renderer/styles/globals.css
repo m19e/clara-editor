@@ -12,13 +12,15 @@
 /* Stop purging. */
 
 /* Your own custom utilities */
-.vertical {
-  writing-mode: vertical-rl;
-}
-
 @layer components {
   .btn-blue {
     @apply text-white font-bold px-4 py-2 rounded bg-blue-600 hover:bg-blue-500;
+  }
+}
+
+@layer utilities {
+  .vertical {
+    writing-mode: vertical-rl;
   }
 
   .vertical-editor {
@@ -31,5 +33,25 @@
 
   .placeholder {
     @apply absolute text-gray-500 top-6 left-6 pointer-events-none select-none;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    @supports (-ms-ime-align: auto) {
+      height: 0.4em;
+    }
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @supports (-ms-ime-align: auto) {
+      border-radius: 0.2em;
+      box-shadow: inset 0 0 0.1em 0.1em #999;
+      border: solid 0.1em transparent;
+    }
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    @supports (-ms-ime-align: auto) {
+      background-color: #909090;
+    }
   }
 }
