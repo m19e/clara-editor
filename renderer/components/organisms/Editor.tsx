@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react"
-import type { ComponentProps, FC } from "react"
+import type { ComponentProps, FC, WheelEvent } from "react"
 
 import { Drawer } from "react-daisyui"
 
@@ -32,6 +32,16 @@ export const Editor: FC = () => {
     }
   }, [])
 
+  const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        top: 0,
+        left: -(e.deltaY * 3),
+        behavior: "smooth",
+      })
+    }
+  }
+
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <Drawer
@@ -51,6 +61,7 @@ export const Editor: FC = () => {
               <div
                 className="scrollbar relative overflow-x-auto overflow-y-hidden py-14"
                 ref={containerRef}
+                onWheel={handleWheel}
                 style={{
                   height: "calc(20em + 7em)",
                   lineHeight: "1.5",
