@@ -9,9 +9,7 @@ const Home = () => {
       <Head>
         <title>(小説のタイトル) - Clara Editor</title>
       </Head>
-      <div className="h-screen w-screen">
-        <Editor />
-      </div>
+      <Editor />
     </Fragment>
   )
 }

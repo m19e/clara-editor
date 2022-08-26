@@ -15,19 +15,21 @@ const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
 
 export const Editor: FC = () => {
   return (
-    <LexicalComposer initialConfig={initialConfig}>
-      <div className="vertical relative min-h-[240px] p-6">
-        <PlainTextPlugin
-          contentEditable={
-            <ContentEditable className="h-full min-w-full font-serif focus:outline-none" />
-          }
-          placeholder={<Placeholder />}
-        />
-      </div>
-      <AutoFocusPlugin defaultSelection="rootEnd" />
-      <HistoryPlugin />
-      <VerticalPlugin />
-    </LexicalComposer>
+    <div className="h-screen w-screen">
+      <LexicalComposer initialConfig={initialConfig}>
+        <div className="vertical relative min-h-[240px] p-6">
+          <PlainTextPlugin
+            contentEditable={
+              <ContentEditable className="h-full min-w-full font-serif focus:outline-none" />
+            }
+            placeholder={<Placeholder />}
+          />
+        </div>
+        <AutoFocusPlugin defaultSelection="rootEnd" />
+        <HistoryPlugin />
+        <VerticalPlugin />
+      </LexicalComposer>
+    </div>
   )
 }
 
