@@ -57,9 +57,9 @@ export const Editor: FC = () => {
             id="container"
             className="flex h-full w-full flex-col items-center justify-center"
           >
-            <div className="w-3/4">
+            <div className="flex w-3/4 justify-center">
               <div
-                className="scrollbar relative overflow-x-auto overflow-y-hidden py-14"
+                className="scrollbar vertical relative overflow-x-auto overflow-y-hidden py-14"
                 ref={containerRef}
                 onWheel={handleWheel}
                 style={{
@@ -70,7 +70,7 @@ export const Editor: FC = () => {
               >
                 <PlainTextPlugin
                   contentEditable={
-                    <ContentEditable className="vertical h-full min-w-full font-serif focus:outline-none" />
+                    <ContentEditable className="h-full font-serif focus:outline-none" />
                   }
                   placeholder={<Placeholder />}
                 />
@@ -88,7 +88,7 @@ export const Editor: FC = () => {
 
 const Placeholder: FC = () => {
   return (
-    <div className="vertical pointer-events-none absolute top-14 right-0 select-none  font-serif text-gray-500">
+    <div className="pointer-events-none absolute top-14 right-0 select-none  font-serif text-gray-500">
       執筆を始める
     </div>
   )
