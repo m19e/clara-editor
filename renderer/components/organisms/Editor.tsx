@@ -1,5 +1,7 @@
 import type { ComponentProps, FC } from "react"
 
+import { Drawer } from "react-daisyui"
+
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
@@ -15,21 +17,26 @@ const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
 
 export const Editor: FC = () => {
   return (
-    <div className="h-screen w-screen">
-      <LexicalComposer initialConfig={initialConfig}>
-        <div className="vertical relative min-h-[240px] p-6">
-          <PlainTextPlugin
-            contentEditable={
-              <ContentEditable className="h-full min-w-full font-serif focus:outline-none" />
-            }
-            placeholder={<Placeholder />}
-          />
-        </div>
-        <AutoFocusPlugin defaultSelection="rootEnd" />
-        <HistoryPlugin />
-        <VerticalPlugin />
-      </LexicalComposer>
-    </div>
+    <Drawer
+      side={<div className="prose bg-base-300 h-full w-1/4">drawer open!</div>}
+      open={false}
+    >
+      <div className="h-full w-full">
+        <LexicalComposer initialConfig={initialConfig}>
+          <div className="vertical relative min-h-[240px] p-6">
+            <PlainTextPlugin
+              contentEditable={
+                <ContentEditable className="h-full min-w-full font-serif focus:outline-none" />
+              }
+              placeholder={<Placeholder />}
+            />
+          </div>
+          <AutoFocusPlugin defaultSelection="rootEnd" />
+          <HistoryPlugin />
+          <VerticalPlugin />
+        </LexicalComposer>
+      </div>
+    </Drawer>
   )
 }
 
