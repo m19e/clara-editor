@@ -12,7 +12,7 @@
 /* Stop purging. */
 
 /* Your own custom utilities */
-.writing-v-rl {
+.vertical {
   writing-mode: vertical-rl;
 }
 
@@ -28,7 +28,7 @@
   }
 
   .vertical-editor {
-    @apply writing-v-rl relative p-6 min-h-[240px];
+    @apply vertical relative p-6 min-h-[240px];
   }
 
   .content-editable {
