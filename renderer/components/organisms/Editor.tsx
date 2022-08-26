@@ -6,7 +6,7 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable"
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin"
 
-import { VerticalPlugin } from "@/components/plugins/VerticalPlugin"
+import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
   namespace: "ClaraEditor",
