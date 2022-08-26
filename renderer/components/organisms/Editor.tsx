@@ -30,5 +30,5 @@ export const Editor: FC = () => {
 }
 
 const Placeholder: FC = () => {
-  return <div className="placeholder">いまどうしてる？</div>
+  return <div className="placeholder">執筆を始める</div>
 }
