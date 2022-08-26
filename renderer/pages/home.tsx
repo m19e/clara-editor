@@ -1,18 +1,18 @@
-import React from "react"
+import { Fragment } from "react"
 import Head from "next/head"
 
 import { Editor } from "@/components/organisms/Editor"
 
-function Home() {
+const Home = () => {
   return (
-    <React.Fragment>
+    <Fragment>
       <Head>
-        <title>Home - Nextron (with-typescript-tailwindcss)</title>
+        <title>(小説のタイトル) - Clara Editor</title>
       </Head>
       <div className="h-screen w-screen">
         <Editor />
       </div>
-    </React.Fragment>
+    </Fragment>
   )
 }
 
