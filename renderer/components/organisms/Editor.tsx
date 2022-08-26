@@ -24,9 +24,9 @@ export const Editor: FC = () => {
       // containerRef.current.setAttribute(
       //   "style",
       //   `
-      //   height: calc(${38}em + 7rem);
-      //   line-height: ${2};
-      //   font-size: ${1}rem;
+      //   height: calc(${lw}em + 7rem);
+      //   line-height: ${lineHeight};
+      //   font-size: ${fontSize}rem;
       //   `
       // )
     }
