@@ -13,6 +13,7 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
+import { Setting } from "@/components/organisms/Setting"
 
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
   namespace: "ClaraEditor",
@@ -47,14 +48,7 @@ export const Editor: FC = () => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <Drawer
-        side={
-          <div className="prose bg-base-100 text-base-content flex h-full w-80 flex-col gap-4 overflow-y-auto p-4">
-            drawer open!
-          </div>
-        }
-        open={false}
-      >
+      <Drawer side={<Setting />} open>
         <div className="h-full w-full">
           <div
             id="container"
