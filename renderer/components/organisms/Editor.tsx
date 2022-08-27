@@ -1,7 +1,7 @@
-import { useRef, useEffect } from "react"
+import { useRef, useState, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 
-import { Drawer } from "react-daisyui"
+import { Drawer, Navbar } from "react-daisyui"
 
 import { $getRoot } from "lexical"
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
@@ -21,6 +21,7 @@ const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
 }
 
 export const Editor: FC = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -48,12 +49,28 @@ export const Editor: FC = () => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <Drawer side={<Setting />} open>
+      <Drawer
+        side={<Setting />}
+        open={isDrawerOpen}
+        onClickOverlay={() => setIsDrawerOpen(false)}
+      >
         <div className="h-full w-full">
           <div
             id="container"
-            className="flex h-full w-full flex-col items-center justify-center"
+            className="flex h-full w-full flex-col items-center justify-between"
           >
+            <Navbar className="border-b-base-300 min-h-[3rem] gap-2 border-b-2 opacity-0 transition-opacity duration-1000 ease-out hover:opacity-100">
+              <div className="flex flex-1 justify-start gap-2">
+                <div
+                  className="btn btn-xs"
+                  onClick={() => setIsDrawerOpen(true)}
+                >
+                  open setting
+                </div>
+              </div>
+              <div className="flex flex-1 justify-center text-sm"></div>
+              <div className="flex flex-1 justify-end"></div>
+            </Navbar>
             <div className="flex w-3/4 justify-center">
               <div
                 className="scrollbar vertical relative overflow-x-auto overflow-y-hidden py-14"
