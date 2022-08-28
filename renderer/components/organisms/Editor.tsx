@@ -57,7 +57,7 @@ export const Editor: FC = () => {
         <div className="h-full w-full">
           <div
             id="container"
-            className="flex h-full w-full flex-col items-center justify-between"
+            className="flex h-full w-full flex-col items-center justify-between overflow-y-hidden"
           >
             <Navbar className="border-b-base-300 min-h-[3rem] gap-2 border-b-2 opacity-0 transition-opacity duration-1000 ease-out hover:opacity-100">
               <div className="flex flex-1 justify-start gap-2">
@@ -90,6 +90,12 @@ export const Editor: FC = () => {
                 />
               </div>
             </div>
+            <Navbar className="border-t-base-300 group relative min-h-[3rem] gap-2 overflow-visible border-t-2 bg-gray-300">
+              <div className="absolute top-24 z-10 duration-200 group-hover:-top-24">
+                <span className="">title</span>
+                <span className="">info</span>
+              </div>
+            </Navbar>
           </div>
         </div>
       </Drawer>
