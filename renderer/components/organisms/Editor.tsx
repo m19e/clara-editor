@@ -14,6 +14,7 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
 import { Setting } from "@/components/organisms/Setting"
+import { Footer } from "@/components/organisms/Footer"
 
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
   namespace: "ClaraEditor",
@@ -90,12 +91,7 @@ export const Editor: FC = () => {
                 />
               </div>
             </div>
-            <Navbar className="border-t-base-300 group relative min-h-[3rem] gap-2 overflow-visible border-t-2 bg-gray-300">
-              <div className="absolute top-24 z-10 duration-200 group-hover:-top-24">
-                <span className="">title</span>
-                <span className="">info</span>
-              </div>
-            </Navbar>
+            <Footer />
           </div>
         </div>
       </Drawer>
