@@ -1,7 +1,6 @@
 export const Footer = () => {
   return (
     <div className="navbar group border-t-base-300 relative h-12 gap-2 overflow-visible border-t-2 bg-gray-300 p-0">
-      {/* <div className="prose absolute top-full z-10 flex flex-col gap-4 delay-500 duration-200 hover:!-top-full group-hover:top-1/2"> */}
       <div className="absolute -bottom-full flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-6">
         <div className="bg-base-300 flex w-full flex-col items-center">
           <div className="h-6">
