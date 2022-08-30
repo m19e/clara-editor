@@ -58,43 +58,45 @@ export const Editor: FC = () => {
         <div className="h-full w-full">
           <div
             id="container"
-            className="flex h-full w-full flex-col items-center justify-between overflow-y-hidden"
+            className="flex h-full w-full flex-col items-center"
           >
-            <Navbar className="border-b-base-300 min-h-[3rem] gap-2 border-b-2 opacity-0 transition-opacity duration-1000 ease-out hover:opacity-100">
-              <div className="flex flex-1 justify-start gap-2">
-                <div
-                  className="btn btn-xs"
-                  onClick={() => setIsDrawerOpen(true)}
-                >
-                  open setting
-                </div>
-              </div>
-              <div className="flex flex-1 justify-center text-sm"></div>
-              <div className="flex flex-1 justify-end"></div>
-            </Navbar>
             <div className="flex w-3/4 justify-center">
               <div
-                className="scrollbar vertical relative overflow-x-auto overflow-y-hidden py-14"
+                className="scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14"
                 ref={containerRef}
                 onWheel={handleWheel}
                 style={{
-                  height: "calc(20em + 7em)",
+                  maxHeight: "calc(20em + 7em)",
                   lineHeight: "1.5",
                   fontSize: "1.25rem",
                 }}
               >
                 <PlainTextPlugin
                   contentEditable={
-                    <ContentEditable className="h-full font-serif focus:outline-none" />
+                    <ContentEditable className="font-serif focus:outline-none" />
                   }
                   placeholder={<Placeholder />}
                 />
               </div>
             </div>
-            <Footer />
+            <div></div>
           </div>
         </div>
       </Drawer>
+
+      <div className="fixed top-0 w-full">
+        <Navbar className="border-b-base-300 min-h-[3rem] gap-2 border-b-2 opacity-0 transition-opacity duration-1000 ease-out hover:opacity-100">
+          <div className="flex flex-1 justify-start gap-2">
+            <div className="btn btn-xs" onClick={() => setIsDrawerOpen(true)}>
+              open setting
+            </div>
+          </div>
+          <div className="flex flex-1 justify-center text-sm"></div>
+          <div className="flex flex-1 justify-end"></div>
+        </Navbar>
+      </div>
+      <Footer />
+
       <AutoFocusPlugin defaultSelection="rootEnd" />
       <AutoHorizontalScrollPlugin scrollRef={containerRef} />
       <HistoryPlugin />
