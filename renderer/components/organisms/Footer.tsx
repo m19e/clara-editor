@@ -1,6 +1,8 @@
+import { FC } from "react"
+
 /* eslint-disable tailwindcss/enforces-negative-arbitrary-values */
 
-export const Footer = () => {
+export const Footer: FC = () => {
   return (
     <div className="fixed bottom-0 w-full">
       <div className="group border-t-base-300 relative h-[4rem] gap-2 border-t-2 bg-gray-300 p-0">
@@ -10,7 +12,7 @@ export const Footer = () => {
   )
 }
 
-const Control = () => {
+const Control: FC = () => {
   const handleClickDemo = () => {
     // empty
   }
@@ -55,7 +57,7 @@ type Props = {
   disabled: boolean
 }
 
-const Chevron = ({ type, onClick, disabled }: Props) => {
+const Chevron: FC<Props> = ({ type, onClick, disabled }) => {
   const d =
     type === "inc"
       ? "M4.5 15.75l7.5-7.5 7.5 7.5"
