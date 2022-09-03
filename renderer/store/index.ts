@@ -1,6 +1,6 @@
 import { atom } from "recoil"
 
-type FontType = "mincho" | "gothic"
+import { FontType } from "@/types"
 
 // Editor
 export const fontTypeState = atom<FontType>({
