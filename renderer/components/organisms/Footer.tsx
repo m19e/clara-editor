@@ -74,7 +74,7 @@ const Control: FC = () => {
   )
 }
 
-type ButtonProps = {
+interface ButtonProps {
   type: "inc" | "dec"
   onClick: () => void
   disabled: boolean
@@ -96,7 +96,7 @@ const ChevronButton: FC<ButtonProps> = ({ type, onClick, disabled }) => {
   )
 }
 
-type IconProps = {
+interface IconProps {
   isUp: boolean
 }
 
