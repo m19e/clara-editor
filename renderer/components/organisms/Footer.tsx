@@ -7,7 +7,7 @@ import { useFontSize, useLineHeight, useLineWords } from "@/hooks"
 export const Footer: FC = () => {
   return (
     <div className="fixed bottom-0 w-full">
-      <div className="group border-t-base-300 relative h-[4rem] gap-2 border-t-2 bg-gray-300 p-0">
+      <div className="group relative h-[4rem] gap-2 p-0">
         <Control />
       </div>
     </div>
@@ -67,12 +67,12 @@ const Control: FC = () => {
 
   return (
     <div
-      className={`-bottom-[6.5rem absolute -bottom-0 flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(6.5rem-1rem)]`}
+      className={`absolute -bottom-[6.5rem] flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(6.5rem-1.5rem)]`}
     >
       <div
-        className={`bg-base-100 flex h-[6.5rem] w-full flex-col items-center shadow`}
+        className={`bg-base-100 flex h-[6.5rem] w-full flex-col items-center`}
       >
-        <div className="flex h-[1rem] w-1/12 items-center justify-center">
+        <div className="flex h-[1.5rem] w-1/12 items-center justify-center">
           <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
         <div className="flex flex-1 items-center justify-center">
