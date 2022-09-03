@@ -78,26 +78,23 @@ const Control: FC = () => {
         <div className="flex flex-1 items-center justify-center">
           <div className="flex items-center gap-4">
             {controlList.map((control) => (
-              <div
-                key={control.id}
-                className="nested-group flex flex-col items-center"
-              >
-                <ChevronButton
-                  type="inc"
-                  onClick={control.inc}
-                  disabled={control.disabled.inc}
-                />
-                <span>{control.label}</span>
-                <ChevronButton
-                  type="dec"
-                  onClick={control.dec}
-                  disabled={control.disabled.dec}
-                />
-              </div>
+              <ControlBox key={control.id} control={control} />
             ))}
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+const ControlBox: FC<{ control: ControlType }> = ({ control }) => {
+  const { label, inc, dec, disabled } = control
+
+  return (
+    <div className="nested-group flex flex-col items-center">
+      <ChevronButton type="inc" onClick={inc} disabled={disabled.inc} />
+      <span>{label}</span>
+      <ChevronButton type="dec" onClick={dec} disabled={disabled.dec} />
     </div>
   )
 }
@@ -124,11 +121,9 @@ const ChevronButton: FC<ButtonProps> = ({ type, onClick, disabled }) => {
   )
 }
 
-interface IconProps {
+const ChevronIcon: FC<{
   isUp: boolean
-}
-
-const ChevronIcon: FC<IconProps> = ({ isUp }) => {
+}> = ({ isUp }) => {
   const d = isUp ? "M4.5 15.75l7.5-7.5 7.5 7.5" : "M19.5 8.25l-7.5 7.5-7.5-7.5"
 
   return (
