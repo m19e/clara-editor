@@ -1,5 +1,8 @@
 /* eslint-disable tailwindcss/enforces-negative-arbitrary-values */
-import { FC } from "react"
+import type { FC } from "react"
+import { useMemo } from "react"
+
+import { useFontSize, useLineHeight, useLineWords } from "@/hooks"
 
 export const Footer: FC = () => {
   return (
@@ -11,7 +14,55 @@ export const Footer: FC = () => {
   )
 }
 
+interface ControlType {
+  id: string
+  label: string
+  inc: () => void
+  dec: () => void
+  disabled: { inc: boolean; dec: boolean }
+}
+
 const Control: FC = () => {
+  const [fs, fsAction] = useFontSize()
+  const [lh, lhAction] = useLineHeight()
+  const [lw, lwAction] = useLineWords()
+
+  const controlList = useMemo<ControlType[]>(
+    () => [
+      {
+        id: "font-size",
+        label: `大きさ ${fs}`,
+        inc: fsAction.increment,
+        dec: fsAction.decrement,
+        disabled: {
+          inc: fs >= 2.5,
+          dec: fs <= 0.5,
+        },
+      },
+      {
+        id: "line-height",
+        label: `行間 ${lh}`,
+        inc: lhAction.increment,
+        dec: lhAction.decrement,
+        disabled: {
+          inc: lh >= 2.5,
+          dec: lh <= 1.5,
+        },
+      },
+      {
+        id: "line-words",
+        label: `字数 ${lw}`,
+        inc: lwAction.increment,
+        dec: lwAction.decrement,
+        disabled: {
+          inc: lw >= 40,
+          dec: lw <= 20,
+        },
+      },
+    ],
+    [fs, lh, lw]
+  )
+
   const handleClickDemo = () => {
     // empty
   }
@@ -28,45 +79,24 @@ const Control: FC = () => {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="flex items-center gap-4">
-            <div className="nested-group flex flex-col items-center">
-              <ChevronButton
-                type="inc"
-                onClick={handleClickDemo}
-                disabled={false}
-              />
-              <span>大きさ {"{fs}"}</span>
-              <ChevronButton
-                type="dec"
-                onClick={handleClickDemo}
-                disabled={false}
-              />
-            </div>
-            <div className="nested-group flex flex-col items-center">
-              <ChevronButton
-                type="inc"
-                onClick={handleClickDemo}
-                disabled={true}
-              />
-              <span>大きさ {"{fs}"}</span>
-              <ChevronButton
-                type="dec"
-                onClick={handleClickDemo}
-                disabled={true}
-              />
-            </div>
-            <div className="nested-group flex flex-col items-center">
-              <ChevronButton
-                type="inc"
-                onClick={handleClickDemo}
-                disabled={false}
-              />
-              <span>大きさ fs</span>
-              <ChevronButton
-                type="dec"
-                onClick={handleClickDemo}
-                disabled={false}
-              />
-            </div>
+            {controlList.map((control) => (
+              <div
+                key={control.id}
+                className="nested-group flex flex-col items-center"
+              >
+                <ChevronButton
+                  type="inc"
+                  onClick={control.inc}
+                  disabled={control.disabled.inc}
+                />
+                <span>{control.label}</span>
+                <ChevronButton
+                  type="dec"
+                  onClick={control.dec}
+                  disabled={control.disabled.dec}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
