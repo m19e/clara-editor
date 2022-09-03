@@ -4,6 +4,9 @@ import type { ComponentProps, FC, WheelEvent } from "react"
 import { Drawer, Navbar } from "react-daisyui"
 
 import { $getRoot } from "lexical"
+
+import { useFontSize, useLineHeight, useLineWords } from "@/hooks"
+
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
@@ -22,21 +25,28 @@ const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
 }
 
 export const Editor: FC = () => {
+  const [fs] = useFontSize()
+  const [lh] = useLineHeight()
+  const [lw] = useLineWords()
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (containerRef.current) {
-      // containerRef.current.setAttribute(
-      //   "style",
-      //   `
-      //   height: calc(${lw}em + 7rem);
-      //   line-height: ${lineHeight};
-      //   font-size: ${fontSize}rem;
-      //   `
-      // )
+      const ffs = Math.ceil(fs * 10) / 10
+      const flh = Math.ceil(lh * 10) / 10
+
+      containerRef.current.setAttribute(
+        "style",
+        `
+        font-size: ${ffs}rem;
+        line-height: ${flh};
+        max-height: calc(${lw}em + 7rem);
+        `
+      )
     }
-  }, [])
+  }, [fs, lh, lw])
 
   const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
     if (containerRef.current) {
@@ -65,11 +75,6 @@ export const Editor: FC = () => {
                 className="scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14"
                 ref={containerRef}
                 onWheel={handleWheel}
-                style={{
-                  maxHeight: "calc(20em + 7em)",
-                  lineHeight: "1.5",
-                  fontSize: "1.25rem",
-                }}
               >
                 <PlainTextPlugin
                   contentEditable={
