@@ -1,6 +1,5 @@
-import { FC } from "react"
-
 /* eslint-disable tailwindcss/enforces-negative-arbitrary-values */
+import { FC } from "react"
 
 export const Footer: FC = () => {
   return (
@@ -30,19 +29,43 @@ const Control: FC = () => {
         <div className="flex flex-1 items-center justify-center">
           <div className="flex items-center gap-4">
             <div className="nested-group flex flex-col items-center">
-              <Chevron type="inc" onClick={handleClickDemo} disabled={false} />
+              <ChevronButton
+                type="inc"
+                onClick={handleClickDemo}
+                disabled={false}
+              />
               <span>大きさ {"{fs}"}</span>
-              <Chevron type="dec" onClick={handleClickDemo} disabled={false} />
+              <ChevronButton
+                type="dec"
+                onClick={handleClickDemo}
+                disabled={false}
+              />
             </div>
             <div className="nested-group flex flex-col items-center">
-              <Chevron type="inc" onClick={handleClickDemo} disabled={true} />
+              <ChevronButton
+                type="inc"
+                onClick={handleClickDemo}
+                disabled={true}
+              />
               <span>大きさ {"{fs}"}</span>
-              <Chevron type="dec" onClick={handleClickDemo} disabled={true} />
+              <ChevronButton
+                type="dec"
+                onClick={handleClickDemo}
+                disabled={true}
+              />
             </div>
             <div className="nested-group flex flex-col items-center">
-              <Chevron type="inc" onClick={handleClickDemo} disabled={false} />
+              <ChevronButton
+                type="inc"
+                onClick={handleClickDemo}
+                disabled={false}
+              />
               <span>大きさ fs</span>
-              <Chevron type="dec" onClick={handleClickDemo} disabled={false} />
+              <ChevronButton
+                type="dec"
+                onClick={handleClickDemo}
+                disabled={false}
+              />
             </div>
           </div>
         </div>
@@ -51,17 +74,14 @@ const Control: FC = () => {
   )
 }
 
-type Props = {
+type ButtonProps = {
   type: "inc" | "dec"
   onClick: () => void
   disabled: boolean
 }
 
-const Chevron: FC<Props> = ({ type, onClick, disabled }) => {
-  const d =
-    type === "inc"
-      ? "M4.5 15.75l7.5-7.5 7.5 7.5"
-      : "M19.5 8.25l-7.5 7.5-7.5-7.5"
+const ChevronButton: FC<ButtonProps> = ({ type, onClick, disabled }) => {
+  const isUp = type === "inc"
 
   return (
     <button
@@ -70,17 +90,29 @@ const Chevron: FC<Props> = ({ type, onClick, disabled }) => {
       disabled={disabled}
     >
       <span className="ng-hover:opacity-100 h-5 w-5 opacity-0 transition-opacity">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="h-full w-full"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d={d} />
-        </svg>
+        <ChevronIcon isUp={isUp} />
       </span>
     </button>
+  )
+}
+
+type IconProps = {
+  isUp: boolean
+}
+
+const ChevronIcon: FC<IconProps> = ({ isUp }) => {
+  const d = isUp ? "M4.5 15.75l7.5-7.5 7.5 7.5" : "M19.5 8.25l-7.5 7.5-7.5-7.5"
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="h-full w-full"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d={d} />
+    </svg>
   )
 }
