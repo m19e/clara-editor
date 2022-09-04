@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react"
+import { useEffect } from "react"
 
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { $isElementNode, $getSelection, $isRangeSelection } from "lexical"
@@ -14,7 +14,7 @@ export const AutoHorizontalScrollPlugin = ({
 }: Props): JSX.Element | null => {
   const [editor] = useLexicalComposerContext()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     return editor.registerUpdateListener(({ editorState, tags }) => {
       const scrollElement = scrollRef.current
 
