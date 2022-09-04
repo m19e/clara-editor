@@ -6,7 +6,7 @@ import { useFontType, useFontSize, useLineHeight, useLineWords } from "@/hooks"
 
 export const Footer: FC = () => {
   return (
-    <div className="fixed bottom-0 w-full">
+    <div className="fixed bottom-0 w-full select-none">
       <div className="group relative h-[6rem] gap-2 p-0">
         <Control />
       </div>
