@@ -34,16 +34,9 @@ export const Editor: FC = () => {
 
   useEffect(() => {
     if (containerRef.current) {
-      const ffs = Math.ceil(fs * 10) / 10
-      const flh = Math.ceil(lh * 10) / 10
-
       containerRef.current.setAttribute(
         "style",
-        `
-        font-size: ${ffs}rem;
-        line-height: ${flh};
-        max-height: calc(${lw}em + 7rem);
-        `
+        `font-size: ${fs}rem; line-height: ${lh}; max-height: calc(${lw}em + 7rem);`
       )
     }
   }, [fs, lh, lw])
