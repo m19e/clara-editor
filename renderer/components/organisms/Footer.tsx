@@ -2,12 +2,12 @@
 import type { FC } from "react"
 import { useMemo, Fragment } from "react"
 
-import { useFontSize, useLineHeight, useLineWords } from "@/hooks"
+import { useFontType, useFontSize, useLineHeight, useLineWords } from "@/hooks"
 
 export const Footer: FC = () => {
   return (
     <div className="fixed bottom-0 w-full">
-      <div className="group relative h-[4rem] gap-2 p-0">
+      <div className="group relative h-[6rem] gap-2 p-0">
         <Control />
       </div>
     </div>
@@ -23,6 +23,7 @@ interface ControlType {
 }
 
 const Control: FC = () => {
+  const [ft, setFontType] = useFontType()
   const [fs, fsAction] = useFontSize()
   const [lh, lhAction] = useLineHeight()
   const [lw, lwAction] = useLineWords()
@@ -66,14 +67,29 @@ const Control: FC = () => {
     <div
       className={`absolute -bottom-[6.5rem] flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(6.5rem-1.5rem)]`}
     >
-      <div
-        className={`bg-base-100 flex h-[6.5rem] w-full flex-col items-center`}
-      >
-        <div className="flex h-[1.5rem] w-1/12 items-center justify-center">
+      <div className={`bg-base-100 flex h-[7rem] w-full flex-col items-center`}>
+        <div className="flex h-[1.5rem] w-16 items-center justify-center">
           <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
-        <div className="flex flex-1 items-center justify-center">
-          <div className="flex items-center">
+        <div className="flex flex-1 items-start justify-center">
+          <div className="mr-5 flex items-center">
+            <div className="nested-group flex flex-col justify-end self-stretch">
+              <span className="text-center">
+                {ft === "mincho" ? "明朝" : "ゴシック"}
+              </span>
+              <button
+                className="text-gray-400 hover:text-gray-600 active:text-gray-800"
+                onClick={() =>
+                  setFontType((prev) =>
+                    prev === "mincho" ? "gothic" : "mincho"
+                  )
+                }
+              >
+                <span className="ng-hover:opacity-100 opacity-0 transition-opacity">
+                  {ft === "mincho" ? "ゴシック" : "明朝"}
+                </span>
+              </button>
+            </div>
             {controlList.map((control) => (
               <Fragment key={control.id}>
                 <span className="mx-4">・</span>
