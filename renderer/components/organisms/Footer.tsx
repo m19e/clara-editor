@@ -1,6 +1,6 @@
 /* eslint-disable tailwindcss/enforces-negative-arbitrary-values */
 import type { FC } from "react"
-import { useMemo } from "react"
+import { useMemo, Fragment } from "react"
 
 import { useFontSize, useLineHeight, useLineWords } from "@/hooks"
 
@@ -73,9 +73,12 @@ const Control: FC = () => {
           <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
         <div className="flex flex-1 items-center justify-center">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center">
             {controlList.map((control) => (
-              <ControlBox key={control.id} control={control} />
+              <Fragment key={control.id}>
+                <span className="mx-4">・</span>
+                <ControlBox control={control} />
+              </Fragment>
             ))}
           </div>
         </div>
