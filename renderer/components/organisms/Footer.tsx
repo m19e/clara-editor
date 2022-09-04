@@ -37,7 +37,7 @@ const Control: FC = () => {
         dec: fsAction.decrement,
         disabled: {
           inc: fs >= 2.5,
-          dec: fs <= 0.5,
+          dec: fs <= 1,
         },
       },
       {
@@ -65,38 +65,34 @@ const Control: FC = () => {
 
   return (
     <div
-      className={`absolute -bottom-[6.5rem] flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(6.5rem-1.5rem)]`}
+      className={`absolute -bottom-[7rem] flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(7rem-1.5rem)]`}
     >
       <div className={`bg-base-100 flex h-[7rem] w-full flex-col items-center`}>
         <div className="flex h-[1.5rem] w-16 items-center justify-center">
           <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
-        <div className="flex flex-1 items-start justify-center">
-          <div className="mr-5 flex items-center">
-            <div className="nested-group flex flex-col justify-end self-stretch">
-              <span className="text-center">
-                {ft === "mincho" ? "明朝" : "ゴシック"}
+        <div className="mr-5 flex items-center">
+          <div className="nested-group flex flex-col justify-end self-stretch">
+            <span className="whitespace-pre text-center">
+              {ft === "mincho" ? "明朝" : "ゴシック"}
+            </span>
+            <button
+              className="text-gray-400 hover:text-gray-600 active:text-gray-800"
+              onClick={() =>
+                setFontType((prev) => (prev === "mincho" ? "gothic" : "mincho"))
+              }
+            >
+              <span className="ng-hover:opacity-100 opacity-0 transition-opacity">
+                {ft === "mincho" ? "ゴシック" : "明朝"}
               </span>
-              <button
-                className="text-gray-400 hover:text-gray-600 active:text-gray-800"
-                onClick={() =>
-                  setFontType((prev) =>
-                    prev === "mincho" ? "gothic" : "mincho"
-                  )
-                }
-              >
-                <span className="ng-hover:opacity-100 opacity-0 transition-opacity">
-                  {ft === "mincho" ? "ゴシック" : "明朝"}
-                </span>
-              </button>
-            </div>
-            {controlList.map((control) => (
-              <Fragment key={control.id}>
-                <span className="mx-4">・</span>
-                <ControlBox control={control} />
-              </Fragment>
-            ))}
+            </button>
           </div>
+          {controlList.map((control) => (
+            <Fragment key={control.id}>
+              <span className="mx-4">・</span>
+              <ControlBox control={control} />
+            </Fragment>
+          ))}
         </div>
       </div>
     </div>
