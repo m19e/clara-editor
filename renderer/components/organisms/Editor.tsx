@@ -66,10 +66,7 @@ export const Editor: FC = () => {
         onClickOverlay={() => setIsDrawerOpen(false)}
       >
         <div className="h-full w-full">
-          <div
-            id="container"
-            className="flex h-full w-full flex-col items-center"
-          >
+          <div id="container" className="grid h-full w-full place-items-center">
             <div className="flex w-3/4 justify-center">
               <div
                 className="scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14"
@@ -84,7 +81,6 @@ export const Editor: FC = () => {
                 />
               </div>
             </div>
-            <div></div>
           </div>
         </div>
       </Drawer>
