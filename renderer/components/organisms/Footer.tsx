@@ -28,28 +28,25 @@ const Control: FC = () => {
   const [lw, lwAction] = useLineWords()
 
   const controlList = useMemo<ControlType[]>(() => {
-    const dfs = Math.ceil(fs * 10)
-    const dlh = Math.ceil(lh * 10)
-
     return [
       {
         id: "font-size",
-        label: `大きさ ${dfs}`,
+        label: `大きさ ${fs * 10}`,
         inc: fsAction.increment,
         dec: fsAction.decrement,
         disabled: {
-          inc: dfs >= 25,
-          dec: dfs <= 5,
+          inc: fs >= 2.5,
+          dec: fs <= 0.5,
         },
       },
       {
         id: "line-height",
-        label: `行間 ${dlh}`,
+        label: `行間 ${lh * 10}`,
         inc: lhAction.increment,
         dec: lhAction.decrement,
         disabled: {
-          inc: dlh >= 25,
-          dec: dlh <= 15,
+          inc: lh >= 2.5,
+          dec: lh <= 1.5,
         },
       },
       {

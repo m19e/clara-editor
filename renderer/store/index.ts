@@ -10,12 +10,12 @@ export const fontTypeState = atom<FontType>({
 
 export const fontSizeState = atom({
   key: "editor/font-size",
-  default: 1,
+  default: 10,
 })
 
 export const lineHeightState = atom({
   key: "editor/line-height",
-  default: 2,
+  default: 20,
 })
 
 export const lineWordsState = atom({

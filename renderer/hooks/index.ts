@@ -13,18 +13,18 @@ export const useFontType = () => useRecoilState(fontTypeState)
 
 export const useFontSize = (): ReturnType => {
   const [fs, setFS] = useRecoilState(fontSizeState)
-  const increment = () => setFS((prev) => prev + 0.1)
-  const decrement = () => setFS((prev) => prev - 0.1)
+  const increment = () => setFS((prev) => prev + 1)
+  const decrement = () => setFS((prev) => prev - 1)
 
-  return [fs, { increment, decrement }]
+  return [fs / 10, { increment, decrement }]
 }
 
 export const useLineHeight = (): ReturnType => {
   const [lh, setLH] = useRecoilState(lineHeightState)
-  const increment = () => setLH((prev) => prev + 0.1)
-  const decrement = () => setLH((prev) => prev - 0.1)
+  const increment = () => setLH((prev) => prev + 1)
+  const decrement = () => setLH((prev) => prev - 1)
 
-  return [lh, { increment, decrement }]
+  return [lh / 10, { increment, decrement }]
 }
 
 export const useLineWords = (): ReturnType => {
