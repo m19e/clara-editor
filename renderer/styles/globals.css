@@ -16,6 +16,34 @@
   .btn-blue {
     @apply text-white font-bold px-4 py-2 rounded bg-blue-600 hover:bg-blue-500;
   }
+
+  .clara-bg__light {
+    background-color: #f9f9fa;
+  }
+
+  .clara-bg__dark {
+    background-color: #44454a;
+  }
+
+  .clara-surface__dark {
+    background-color: #5f6269;
+  }
+
+  .clara-text__light {
+    color: #141426;
+  }
+
+  .clara-text__dark {
+    @apply text-white;
+  }
+
+  .clara-text__light ::selection {
+    @apply clara-text__dark bg-gray-400;
+  }
+
+  .clara-text__dark ::selection {
+    @apply clara-text__light bg-white;
+  }
 }
 
 @layer utilities {
