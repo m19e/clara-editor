@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
+import { useTheme } from "next-themes"
 
 import { Drawer, Navbar } from "react-daisyui"
 
@@ -28,6 +29,7 @@ export const Editor: FC = () => {
   const [fs] = useFontSize()
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
+  const { theme, setTheme } = useTheme()
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -85,7 +87,14 @@ export const Editor: FC = () => {
               open setting
             </div>
           </div>
-          <div className="flex flex-1 justify-center text-sm"></div>
+          <div className="flex flex-1 justify-center text-sm">
+            <div
+              className="btn btn-xs"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              toggle theme: {theme}
+            </div>
+          </div>
           <div className="flex flex-1 justify-end"></div>
         </Navbar>
       </div>
