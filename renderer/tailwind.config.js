@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 module.exports = {
   content: [
     "./renderer/pages/**/*.{js,ts,jsx,tsx}",
