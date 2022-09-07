@@ -92,7 +92,7 @@ export const Editor: FC = () => {
               className="btn btn-xs"
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             >
-              toggle theme: {theme}
+              <span>toggle theme</span>
             </div>
           </div>
           <div className="flex flex-1 justify-end"></div>
