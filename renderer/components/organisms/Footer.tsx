@@ -67,7 +67,7 @@ const Control: FC = () => {
     <div
       className={`absolute -bottom-[7rem] flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(7rem-1.5rem)]`}
     >
-      <div className={`bg-base-100 flex h-[7rem] w-full flex-col items-center`}>
+      <div className={`bg-base-300 flex h-[7rem] w-full flex-col items-center`}>
         <div className="flex h-[1.5rem] w-16 items-center justify-center">
           <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
