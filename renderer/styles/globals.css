@@ -11,6 +11,59 @@
 @tailwind utilities;
 /* Stop purging. */
 
+/* Font-Face */
+@font-face {
+  font-family: "MyEllipsis";
+  font-weight: normal;
+  src: local("YuMin-Medium"), local("YuMincho-Regular");
+  unicode-range: U+2026;
+}
+
+@font-face {
+  font-family: "MyEllipsis";
+  font-weight: bold;
+  src: local("YuMin-Demibold"), local("YuMincho-Demibold");
+  unicode-range: U+2026;
+}
+
+@font-face {
+  font-family: "MyBoxDrawings";
+  font-weight: normal;
+  src: local("YuMin-Medium"), local("YuMincho-Regular");
+  unicode-range: U+203C, U+2047, U+2048, U+2049, U+2500;
+}
+
+@font-face {
+  font-family: "MyBoxDrawings";
+  font-weight: bold;
+  src: local("YuMin-Demibold"), local("YuMincho-Demibold");
+  unicode-range: U+203C, U+2047, U+2048, U+2049, U+2500;
+}
+
+@font-face {
+  font-family: "MyYuGothicM";
+  font-weight: normal;
+  src: local("YuGothic-Medium"), local("Yu Gothic Medium"),
+    local("YuGothic-Regular");
+}
+
+@font-face {
+  font-family: "MyYuGothicM";
+  font-weight: bold;
+  src: local("YuGothic-Bold"), local("Yu Gothic");
+}
+
+/* Font-Set */
+.mincho {
+  font-family: MyEllipsis, MyBoxDrawings, "Times New Roman", TimesNewRoman,
+    "Yu Mincho", YuMincho, serif;
+}
+
+.gothic {
+  font-family: MyEllipsis, MyBoxDrawings, "Helvetica Neue", Helvetica, Arial,
+    "MyYuGothicM", YuGothic, sans-serif;
+}
+
 /* Your own custom utilities */
 @layer components {
   .btn-blue {
