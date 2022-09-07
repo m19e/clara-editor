@@ -81,7 +81,7 @@ export const Editor: FC = () => {
       </Drawer>
 
       <div className="fixed top-0 w-full">
-        <Navbar className="min-h-[3rem] gap-2 opacity-0 shadow transition-opacity duration-1000 ease-out hover:opacity-100">
+        <Navbar className="min-h-[3rem] gap-2 opacity-0 shadow transition-opacity hover:opacity-100">
           <div className="flex flex-1 justify-start gap-2">
             <div className="btn btn-xs" onClick={() => setIsDrawerOpen(true)}>
               open setting
