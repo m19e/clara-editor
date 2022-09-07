@@ -121,7 +121,7 @@ export const Editor: FC = () => {
 
 const Placeholder: FC = () => {
   return (
-    <div className="pointer-events-none absolute top-14 right-0 select-none  font-serif text-gray-500">
+    <div className="text-base-content pointer-events-none absolute top-14 right-0 select-none font-serif text-opacity-60">
       執筆を始める
     </div>
   )
