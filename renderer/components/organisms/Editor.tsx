@@ -70,7 +70,7 @@ export const Editor: FC = () => {
               >
                 <PlainTextPlugin
                   contentEditable={
-                    <ContentEditable className="font-serif focus:outline-none" />
+                    <ContentEditable className="text-base-content font-serif focus:outline-none" />
                   }
                   placeholder={<Placeholder />}
                 />
