@@ -6,7 +6,7 @@ import { Drawer, Navbar } from "react-daisyui"
 
 import { $getRoot } from "lexical"
 
-import { useFontSize, useLineHeight, useLineWords } from "@/hooks"
+import { useFontType, useFontSize, useLineHeight, useLineWords } from "@/hooks"
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
@@ -26,6 +26,7 @@ const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
 }
 
 export const Editor: FC = () => {
+  const [ft] = useFontType()
   const [fs] = useFontSize()
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
@@ -64,13 +65,16 @@ export const Editor: FC = () => {
           <div id="container" className="grid h-full w-full place-items-center">
             <div className="flex w-3/4 justify-center">
               <div
-                className="scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14"
+                className={
+                  "scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14 " +
+                  ft
+                }
                 ref={containerRef}
                 onWheel={handleWheel}
               >
                 <PlainTextPlugin
                   contentEditable={
-                    <ContentEditable className="text-base-content font-serif focus:outline-none" />
+                    <ContentEditable className="text-base-content focus:outline-none" />
                   }
                   placeholder={<Placeholder />}
                 />
@@ -80,7 +84,7 @@ export const Editor: FC = () => {
         </div>
       </Drawer>
 
-      <div className="fixed top-0 w-full">
+      <div className={"fixed top-0 w-full " + ft}>
         <Navbar className="min-h-[3rem] gap-2 opacity-0 shadow transition-opacity hover:opacity-100">
           <div className="flex flex-1 justify-start gap-2">
             <div className="btn btn-xs" onClick={() => setIsDrawerOpen(true)}>
@@ -121,7 +125,7 @@ export const Editor: FC = () => {
 
 const Placeholder: FC = () => {
   return (
-    <div className="text-base-content pointer-events-none absolute top-14 right-0 select-none font-serif text-opacity-60">
+    <div className="text-base-content pointer-events-none absolute top-14 right-0 select-none text-opacity-60">
       執筆を始める
     </div>
   )

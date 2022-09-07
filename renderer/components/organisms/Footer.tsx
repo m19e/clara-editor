@@ -82,7 +82,12 @@ const Control: FC = () => {
                 setFontType((prev) => (prev === "mincho" ? "gothic" : "mincho"))
               }
             >
-              <span className="ng-hover:opacity-100 opacity-0 transition-opacity">
+              <span
+                className={
+                  "ng-hover:opacity-100 opacity-0 transition-opacity " +
+                  (ft === "mincho" ? "gothic" : "mincho")
+                }
+              >
                 {ft === "mincho" ? "ゴシック" : "明朝"}
               </span>
             </button>
