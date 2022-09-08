@@ -98,7 +98,7 @@ const Control: FC = () => {
           </div>
           {controlList.map((control) => (
             <Fragment key={control.id}>
-              <span className="mx-4">・</span>
+              <span className="mx-3">・</span>
               <CountableControlBox control={control} />
             </Fragment>
           ))}
