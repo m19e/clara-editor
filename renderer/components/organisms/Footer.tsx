@@ -67,6 +67,8 @@ const Control: FC = () => {
     ]
   }, [fs, lh, lw])
 
+  const isMincho = ft === "mincho"
+
   return (
     <div
       className={`absolute -bottom-[7rem] flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(7rem-1.5rem)]`}
@@ -78,7 +80,7 @@ const Control: FC = () => {
         <div className={"mr-6 flex items-center h-20 py-1 " + ft}>
           <div className="nested-group flex h-full flex-col justify-end">
             <span className="whitespace-pre text-center">
-              {ft === "mincho" ? "明朝" : "ゴシック"}
+              {isMincho ? "明朝" : "ゴシック"}
             </span>
             <button
               className="text-gray-400 hover:text-gray-600 active:text-gray-800"
@@ -89,10 +91,10 @@ const Control: FC = () => {
               <span
                 className={
                   "ng-hover:opacity-100 opacity-0 transition-opacity " +
-                  (ft === "mincho" ? "gothic" : "mincho")
+                  (isMincho ? "gothic" : "mincho")
                 }
               >
-                {ft === "mincho" ? "ゴシック" : "明朝"}
+                {isMincho ? "ゴシック" : "明朝"}
               </span>
             </button>
           </div>
