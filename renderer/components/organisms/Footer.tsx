@@ -74,7 +74,6 @@ const Control: FC = () => {
       <div className={`bg-base-200 flex h-[7rem] w-full flex-col items-center`}>
         <div className="flex h-[1.5rem] w-16 items-center justify-center">
           <span className="h-1 w-full rounded bg-gray-400"></span>
-          <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
         <div className={"mr-6 flex items-center h-20 py-1 " + ft}>
           <div className="nested-group flex h-full flex-col justify-end">
@@ -115,7 +114,7 @@ const CountableControlBox: FC<{ control: ControlType }> = ({ control }) => {
   return (
     <div className="nested-group flex flex-col items-center">
       <ChevronButton type="inc" onClick={inc} disabled={disabled.inc} />
-      <span>
+      <span className="whitespace-pre">
         {label}
         <span className="gothic"> {value}</span>
       </span>
