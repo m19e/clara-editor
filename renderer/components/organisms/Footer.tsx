@@ -17,6 +17,7 @@ export const Footer: FC = () => {
 interface ControlType {
   id: string
   label: string
+  value: number
   inc: () => void
   dec: () => void
   disabled: { inc: boolean; dec: boolean }
@@ -32,7 +33,8 @@ const Control: FC = () => {
     return [
       {
         id: "font-size",
-        label: `大きさ ${fs * 10}`,
+        label: "大きさ",
+        value: fs * 10,
         inc: fsAction.increment,
         dec: fsAction.decrement,
         disabled: {
@@ -42,7 +44,8 @@ const Control: FC = () => {
       },
       {
         id: "line-height",
-        label: `行間 ${lh * 10}`,
+        label: "行間",
+        value: lh * 10,
         inc: lhAction.increment,
         dec: lhAction.decrement,
         disabled: {
@@ -52,7 +55,8 @@ const Control: FC = () => {
       },
       {
         id: "line-words",
-        label: `字数 ${lw}`,
+        label: "字数",
+        value: lw,
         inc: lwAction.increment,
         dec: lwAction.decrement,
         disabled: {
@@ -106,12 +110,15 @@ const Control: FC = () => {
 }
 
 const CountableControlBox: FC<{ control: ControlType }> = ({ control }) => {
-  const { label, inc, dec, disabled } = control
+  const { label, value, inc, dec, disabled } = control
 
   return (
     <div className="nested-group flex flex-col items-center">
       <ChevronButton type="inc" onClick={inc} disabled={disabled.inc} />
-      <span>{label}</span>
+      <span>
+        {label}
+        <span className="gothic"> {value}</span>
+      </span>
       <ChevronButton type="dec" onClick={dec} disabled={disabled.dec} />
     </div>
   )
