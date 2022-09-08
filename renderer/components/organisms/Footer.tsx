@@ -136,7 +136,7 @@ const ChevronButton: FC<ButtonProps> = ({ type, onClick, disabled }) => {
 
   return (
     <button
-      className="btn btn-xs btn-ghost no-animation w-full !bg-opacity-0 text-gray-400 transition-none hover:text-gray-600 active:text-gray-800"
+      className="btn btn-xs btn-ghost no-animation text-base-content w-full !bg-opacity-0 text-opacity-50 transition-none hover:text-opacity-75 active:text-opacity-100"
       onClick={onClick}
       disabled={disabled}
     >
