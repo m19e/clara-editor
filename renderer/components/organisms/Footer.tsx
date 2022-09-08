@@ -79,18 +79,18 @@ const Control: FC = () => {
         </div>
         <div className={"mr-6 flex items-center h-20 py-1 " + ft}>
           <div className="nested-group flex h-full flex-col justify-end">
-            <span className="whitespace-pre text-center">
+            <span className="whitespace-pre text-center opacity-75">
               {isMincho ? "明朝" : "ゴシック"}
             </span>
             <button
-              className="text-gray-400 hover:text-gray-600 active:text-gray-800"
+              className="ng-hover:opacity-100 opacity-0 transition-opacity"
               onClick={() =>
                 setFontType((prev) => (prev === "mincho" ? "gothic" : "mincho"))
               }
             >
               <span
                 className={
-                  "ng-hover:opacity-100 opacity-0 transition-opacity " +
+                  "opacity-50 hover:opacity-100 " +
                   (isMincho ? "gothic" : "mincho")
                 }
               >
@@ -100,7 +100,7 @@ const Control: FC = () => {
           </div>
           {controlList.map((control) => (
             <Fragment key={control.id}>
-              <span className="mx-3">・</span>
+              <span className="mx-3 opacity-25">・</span>
               <CountableControlBox control={control} />
             </Fragment>
           ))}
