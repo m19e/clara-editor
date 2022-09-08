@@ -116,7 +116,7 @@ const CountableControlBox: FC<{ control: ControlType }> = ({ control }) => {
   return (
     <div className="nested-group flex flex-col items-center">
       <ChevronButton type="inc" onClick={inc} disabled={disabled.inc} />
-      <span className="whitespace-pre">
+      <span className="whitespace-pre opacity-75">
         {label}
         <span className="gothic"> {value}</span>
       </span>
