@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { useTheme } from "next-themes"
 
-import { Drawer, Navbar } from "react-daisyui"
+import { Drawer } from "react-daisyui"
 
 import { $getRoot } from "lexical"
 
@@ -18,6 +18,7 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
 import { Setting } from "@/components/organisms/Setting"
+import { Header } from "@/components/organisms/Header"
 import { Footer } from "@/components/organisms/Footer"
 
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
@@ -84,24 +85,7 @@ export const Editor: FC = () => {
         </div>
       </Drawer>
 
-      <div className={"fixed top-0 w-full " + ft}>
-        <Navbar className="min-h-[3rem] gap-2 opacity-0 shadow transition-opacity hover:opacity-100">
-          <div className="flex flex-1 justify-start gap-2">
-            <div className="btn btn-xs" onClick={() => setIsDrawerOpen(true)}>
-              open setting
-            </div>
-          </div>
-          <div className="flex flex-1 justify-center text-sm">
-            <div
-              className="btn btn-xs"
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            >
-              <span>toggle theme</span>
-            </div>
-          </div>
-          <div className="flex flex-1 justify-end"></div>
-        </Navbar>
-      </div>
+      <Header />
       <Footer />
 
       <AutoFocusPlugin defaultSelection="rootEnd" />
