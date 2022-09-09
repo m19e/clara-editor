@@ -1,9 +1,23 @@
-import {
-  screen,
-  BrowserWindow,
+import { screen, BrowserWindow, ipcMain, dialog } from "electron"
+import type {
   BrowserWindowConstructorOptions,
+  OpenDialogOptions,
 } from "electron"
 import Store from "electron-store"
+
+const addIpcListener = (mainWindow: BrowserWindow) => {
+  ipcMain.on("open-file-dialog", async (event, payload?: OpenDialogOptions) => {
+    if (!mainWindow) {
+      event.reply("open-file-dialog")
+      return
+    }
+
+    const value = await dialog.showOpenDialog(mainWindow, {
+      ...payload,
+    })
+    event.reply("open-file-dialog", value)
+  })
+}
 
 export const createWindow = (
   windowName: string,
@@ -79,6 +93,8 @@ export const createWindow = (
     },
   }
   const win = new BrowserWindow(browserOptions)
+
+  addIpcListener(win)
 
   win.on("close", saveState)
 
