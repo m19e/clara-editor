@@ -1,16 +1,14 @@
 import type { OpenDialogOptions, OpenDialogReturnValue } from "electron"
-import { useState } from "react"
 import { useTheme } from "next-themes"
 import { Navbar } from "react-daisyui"
 
-import { useFontType } from "@/hooks"
+import { useDraftPath, useFontType } from "@/hooks"
 import { ipc } from "@/lib/electron/ipc"
 
 export const Header = () => {
   const { theme, setTheme } = useTheme()
+  const [draftPath, setDraftPath] = useDraftPath()
   const [ft] = useFontType()
-
-  const [filePath, setFilePath] = useState("")
 
   const handleOpenDialog = async () => {
     const res = await ipc<OpenDialogOptions, OpenDialogReturnValue>(
@@ -28,11 +26,10 @@ export const Header = () => {
     )
     const { filePaths, canceled } = res
     if (canceled || filePaths.length !== 1) {
-      setFilePath("canceled")
       return
     }
     const [fp] = filePaths
-    setFilePath(fp)
+    setDraftPath(fp)
   }
 
   return (
@@ -51,9 +48,7 @@ export const Header = () => {
             <span>toggle theme</span>
           </div>
         </div>
-        <div className="flex flex-1 justify-end">
-          <span>{filePath || "empty"}</span>
-        </div>
+        <div className="flex flex-1 justify-end"></div>
       </Navbar>
     </div>
   )
