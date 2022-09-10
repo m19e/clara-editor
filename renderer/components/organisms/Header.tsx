@@ -30,7 +30,7 @@ const $setTextContent = (text: string) => {
 export const Header = () => {
   const { theme, setTheme } = useTheme()
   const [editor] = useLexicalComposerContext()
-  const [draftPath, setDraftPath] = useDraftPath()
+  const [, setDraftPath] = useDraftPath()
   const [ft] = useFontType()
 
   const handleOpenDialog = async () => {
