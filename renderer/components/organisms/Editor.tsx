@@ -33,7 +33,7 @@ export const Editor: FC = () => {
     if (containerRef.current) {
       containerRef.current.setAttribute(
         "style",
-        `font-size: ${fs}rem; line-height: ${lh}; max-height: calc(${lw}em + 7rem);`
+        `font-size: ${fs}rem; line-height: ${lh}; height: calc(${lw}em + 1em); max-height: calc(100vh - 8rem - 1em);`
       )
     }
   }, [fs, lh, lw])
@@ -50,12 +50,15 @@ export const Editor: FC = () => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="h-full w-full">
-        <div id="container" className="grid h-full w-full place-items-center">
+      <div className="h-screen w-full">
+        <div
+          id="container"
+          className="flex h-full w-full flex-col items-center justify-center"
+        >
           <div className="flex w-3/4 justify-center">
             <div
               className={
-                "scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14 " +
+                "scrollbar vertical relative overflow-x-auto overflow-y-hidden " +
                 ft
               }
               ref={containerRef}
@@ -96,7 +99,7 @@ export const Editor: FC = () => {
 
 const Placeholder: FC = () => {
   return (
-    <div className="text-base-content pointer-events-none absolute top-14 right-0 select-none text-opacity-60">
+    <div className="text-base-content pointer-events-none absolute top-0 right-0 select-none text-opacity-60">
       執筆を始める
     </div>
   )
