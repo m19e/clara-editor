@@ -2,7 +2,12 @@ import { useRef, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot } from "lexical"
 
-import { useFontType, useFontSize, useLineHeight, useLineWords } from "@/hooks"
+import {
+  useFontType,
+  useFontSize,
+  useLineHeight,
+  useLineWords,
+} from "@/hooks"
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
@@ -12,6 +17,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
+import { AutoLoadPlugin } from "@/plugins/AutoLoadPlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
 import { Header } from "@/components/organisms/Header"
 import { Footer } from "@/components/organisms/Footer"
@@ -80,6 +86,7 @@ export const Editor: FC = () => {
       <Header />
       <Footer />
 
+      <AutoLoadPlugin />
       <AutoFocusPlugin defaultSelection="rootEnd" />
       <AutoHorizontalScrollPlugin scrollRef={containerRef} />
       <HistoryPlugin />
