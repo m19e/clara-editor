@@ -1,8 +1,5 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
-
-import { Drawer } from "react-daisyui"
-
 import { $getRoot } from "lexical"
 
 import { useFontType, useFontSize, useLineHeight, useLineWords } from "@/hooks"
@@ -16,7 +13,6 @@ import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
-import { Setting } from "@/components/organisms/Setting"
 import { Header } from "@/components/organisms/Header"
 import { Footer } from "@/components/organisms/Footer"
 
@@ -31,7 +27,6 @@ export const Editor: FC = () => {
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -55,33 +50,27 @@ export const Editor: FC = () => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <Drawer
-        side={<Setting />}
-        open={isDrawerOpen}
-        onClickOverlay={() => setIsDrawerOpen(false)}
-      >
-        <div className="h-full w-full">
-          <div id="container" className="grid h-full w-full place-items-center">
-            <div className="flex w-3/4 justify-center">
-              <div
-                className={
-                  "scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14 " +
-                  ft
+      <div className="h-full w-full">
+        <div id="container" className="grid h-full w-full place-items-center">
+          <div className="flex w-3/4 justify-center">
+            <div
+              className={
+                "scrollbar vertical relative h-full overflow-x-auto overflow-y-hidden py-14 " +
+                ft
+              }
+              ref={containerRef}
+              onWheel={handleWheel}
+            >
+              <PlainTextPlugin
+                contentEditable={
+                  <ContentEditable className="text-base-content focus:outline-none" />
                 }
-                ref={containerRef}
-                onWheel={handleWheel}
-              >
-                <PlainTextPlugin
-                  contentEditable={
-                    <ContentEditable className="text-base-content focus:outline-none" />
-                  }
-                  placeholder={<Placeholder />}
-                />
-              </div>
+                placeholder={<Placeholder />}
+              />
             </div>
           </div>
         </div>
-      </Drawer>
+      </div>
 
       <Header />
       <Footer />
