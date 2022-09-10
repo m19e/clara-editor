@@ -1,12 +1,35 @@
+import { readFile } from "fs/promises"
 import type { OpenDialogOptions, OpenDialogReturnValue } from "electron"
 import { useTheme } from "next-themes"
 import { Navbar } from "react-daisyui"
 
+import { $getRoot, $createParagraphNode, $createTextNode } from "lexical"
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
+
 import { useDraftPath, useFontType } from "@/hooks"
 import { ipc } from "@/lib/electron/ipc"
 
+const $setTextContent = (text: string) => {
+  const root = $getRoot()
+  if (root.getFirstChild()) {
+    root.clear()
+  }
+  text
+    .split("\n")
+    .slice(0, -1)
+    .forEach((line) => {
+      const paragraph = $createParagraphNode()
+      if (line.length !== 0) {
+        paragraph.append($createTextNode(line))
+      }
+      root.append(paragraph)
+    })
+  root.selectEnd()
+}
+
 export const Header = () => {
   const { theme, setTheme } = useTheme()
+  const [editor] = useLexicalComposerContext()
   const [draftPath, setDraftPath] = useDraftPath()
   const [ft] = useFontType()
 
@@ -30,6 +53,8 @@ export const Header = () => {
     }
     const [fp] = filePaths
     setDraftPath(fp)
+    const draft = await readFile(fp, { encoding: "utf-8" })
+    editor.update(() => $setTextContent(draft))
   }
 
   return (
