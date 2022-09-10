@@ -33,7 +33,12 @@ export const Editor: FC = () => {
     if (containerRef.current) {
       containerRef.current.setAttribute(
         "style",
-        `font-size: ${fs}rem; line-height: ${lh}; height: calc(${lw}em + 1em); max-height: calc(100vh - 8rem - 1em);`
+        `
+        font-size: ${fs}rem;
+        line-height: ${lh};
+        height: calc(${lw}em + 0.5rem + 1em);
+        max-height: calc(100vh - 8rem - 0.5rem - 1em);
+        `
       )
     }
   }, [fs, lh, lw])
@@ -58,7 +63,7 @@ export const Editor: FC = () => {
           <div className="flex w-3/4 justify-center">
             <div
               className={
-                "scrollbar vertical relative overflow-x-auto overflow-y-hidden " +
+                "scrollbar vertical relative overflow-x-auto overflow-y-hidden break-all text-justify pb-2 " +
                 ft
               }
               ref={containerRef}
