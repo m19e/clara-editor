@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
-import { useTheme } from "next-themes"
 
 import { Drawer } from "react-daisyui"
 
@@ -31,7 +30,6 @@ export const Editor: FC = () => {
   const [fs] = useFontSize()
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
-  const { theme, setTheme } = useTheme()
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
