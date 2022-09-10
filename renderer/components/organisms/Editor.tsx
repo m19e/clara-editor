@@ -62,13 +62,13 @@ export const Editor: FC = () => {
         >
           <div className="flex w-3/4 justify-center">
             <div
-              className={`scrollbar vertical relative overflow-x-auto overflow-y-hidden break-all pb-2 text-justify ${ft}`}
+              className={`scrollbar vertical relative overflow-x-auto overflow-y-hidden pb-2 ${ft}`}
               ref={containerRef}
               onWheel={handleWheel}
             >
               <PlainTextPlugin
                 contentEditable={
-                  <ContentEditable className="text-base-content focus:outline-none" />
+                  <ContentEditable className="text-base-content break-all text-justify focus:outline-none" />
                 }
                 placeholder={<Placeholder />}
               />
