@@ -62,10 +62,7 @@ export const Editor: FC = () => {
         >
           <div className="flex w-3/4 justify-center">
             <div
-              className={
-                "scrollbar vertical relative overflow-x-auto overflow-y-hidden break-all text-justify pb-2 " +
-                ft
-              }
+              className={`scrollbar vertical relative overflow-x-auto overflow-y-hidden break-all pb-2 text-justify ${ft}`}
               ref={containerRef}
               onWheel={handleWheel}
             >
