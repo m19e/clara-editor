@@ -4,6 +4,8 @@ import Store from "electron-store"
 
 import { FontType } from "@/types"
 
+const isProd = process.env.NODE_ENV === "production"
+
 const store = new Store()
 
 type ElectronStoreEffect = <T>(key: string) => AtomEffect<T>
@@ -12,7 +14,7 @@ const appStoreEffect: ElectronStoreEffect =
   (key: string) =>
   ({ setSelf, onSet }) => {
     const value = store.get(key, new DefaultValue()) as any
-    setSelf(value)
+    if (isProd) setSelf(value)
 
     onSet((newValue, _, isReset) => {
       isReset ? store.delete(key) : store.set(key, newValue)

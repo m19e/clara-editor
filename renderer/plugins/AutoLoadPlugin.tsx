@@ -6,6 +6,8 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { $setTextContent } from "@/lib/lexical"
 import { useDraftPath } from "@/hooks"
 
+const isProd = process.env.NODE_ENV === "production"
+
 export const AutoLoadPlugin: FC = () => {
   const [editor] = useLexicalComposerContext()
   const [draftPath] = useDraftPath()
@@ -15,7 +17,7 @@ export const AutoLoadPlugin: FC = () => {
       const draft = await readFile(draftPath, { encoding: "utf-8" })
       editor.update(() => $setTextContent(draft))
     }
-    f()
+    if (isProd) f()
   }, [draftPath])
 
   return null
