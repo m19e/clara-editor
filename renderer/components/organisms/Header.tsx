@@ -16,7 +16,7 @@ export const Header = () => {
     const res = await ipc<OpenDialogOptions, OpenDialogReturnValue>(
       "open-file-dialog",
       {
-        title: "Select a file",
+        title: "ファイルを選択",
         filters: [
           {
             name: "テキストファイル",
