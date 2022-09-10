@@ -2,6 +2,12 @@ import { atom } from "recoil"
 
 import { FontType } from "@/types"
 
+// App
+export const draftFilepathState = atom({
+  key: "app/draft-filepath",
+  default: "",
+})
+
 // Editor
 export const fontTypeState = atom<FontType>({
   key: "editor/font-type",

@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil"
 
 import {
+  draftFilepathState,
   fontTypeState,
   fontSizeState,
   lineHeightState,
@@ -8,6 +9,8 @@ import {
 } from "@/store"
 
 type ReturnType = [number, { increment: () => void; decrement: () => void }]
+
+export const useDraftPath = () => useRecoilState(draftFilepathState)
 
 export const useFontType = () => useRecoilState(fontTypeState)
 
