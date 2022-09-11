@@ -5,15 +5,12 @@ export const $setTextContent = (text: string) => {
   if (root.getFirstChild()) {
     root.clear()
   }
-  text
-    .split("\n")
-    .slice(0, -1)
-    .forEach((line) => {
-      const paragraph = $createParagraphNode()
-      if (line.length !== 0) {
-        paragraph.append($createTextNode(line))
-      }
-      root.append(paragraph)
-    })
+  text.split("\n").forEach((line) => {
+    const paragraph = $createParagraphNode()
+    if (line.length !== 0) {
+      paragraph.append($createTextNode(line))
+    }
+    root.append(paragraph)
+  })
   root.selectEnd()
 }

@@ -5,6 +5,8 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 
 import { useDraftPath } from "@/hooks"
 
+type PlainTextChild = { type: "text"; text: string } | { type: "linebreak" }
+
 const isProd = process.env.NODE_ENV === "production"
 
 export const AutoSavePlugin = (): null => {
@@ -30,10 +32,11 @@ export const AutoSavePlugin = (): null => {
             clearTimeout(timerId)
           }
           // eslint-disable-next-line react-hooks/exhaustive-deps
-          timerId = setTimeout(async () => {
-            const text = editorState.read(() => $getRoot().getTextContent())
-            if (isProd) await writeFile(draftPath, text)
-            console.log("Save draft to: ", draftPath, ` ${text.length}chars`)
+          timerId = setTimeout(() => {
+            editorState.read(async () => {
+              const text = $getRoot().getTextContent().replace(/\n\n/g, "\n")
+              if (isProd) await writeFile(draftPath, text)
+            })
           }, 5000)
         } catch (error) {
           console.error(error)
