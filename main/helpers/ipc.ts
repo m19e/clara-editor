@@ -14,3 +14,18 @@ export const addIpcListener = (mainWindow: BrowserWindow) => {
     event.reply("open-file-dialog", value)
   })
 }
+
+type MainChannel = "recieve-draft-path" | "toggle-color-theme"
+
+export const ipc = <T, U>(
+  mainWindow: BrowserWindow,
+  channel: MainChannel,
+  payload?: T
+): Promise<U> =>
+  new Promise((resolve) => {
+    ipcMain.once(channel, (_event, args: U) => {
+      resolve(args)
+    })
+
+    mainWindow.webContents.send(channel, payload)
+  })

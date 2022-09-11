@@ -1,8 +1,8 @@
-import { screen, BrowserWindow } from "electron"
+import { screen, BrowserWindow, Menu, dialog } from "electron"
 import type { BrowserWindowConstructorOptions } from "electron"
 import Store from "electron-store"
 
-import { addIpcListener } from "./ipc"
+import { addIpcListener, ipc } from "./ipc"
 
 export const createWindow = (
   windowName: string,
@@ -78,6 +78,52 @@ export const createWindow = (
     },
   }
   const win = new BrowserWindow(browserOptions)
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: "原稿",
+      submenu: [
+        {
+          id: "open-draft",
+          label: "開く…",
+          accelerator: "CmdOrCtrl+O",
+          click: async (_, win) => {
+            const res = await dialog.showOpenDialog(win, {
+              title: "ファイルを開く",
+              filters: [
+                {
+                  name: "テキストファイル",
+                  extensions: ["txt"],
+                },
+              ],
+              properties: ["openFile"],
+            })
+            const { filePaths, canceled } = res
+            if (canceled || filePaths.length !== 1) {
+              return
+            }
+            const [fp] = filePaths
+            await ipc<string, void>(win, "recieve-draft-path", fp)
+          },
+        },
+      ],
+    },
+    {
+      label: "設定",
+      submenu: [
+        {
+          id: "dark-mode",
+          label: "ダークモード",
+          click: async (_, win) => {
+            if (win) {
+              await ipc<"light" | "dark", void>(win, "toggle-color-theme")
+            }
+          },
+        },
+      ],
+    },
+  ])
+  Menu.setApplicationMenu(menu)
 
   addIpcListener(win)
 
