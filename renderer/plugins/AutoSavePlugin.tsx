@@ -34,7 +34,9 @@ export const AutoSavePlugin = (): null => {
           // eslint-disable-next-line react-hooks/exhaustive-deps
           timerId = setTimeout(() => {
             editorState.read(async () => {
-              const text = $getRoot().getTextContent().replace(/\n\n/g, "\n")
+              const text = $getRoot()
+                .getTextContent(true, false)
+                .replace(/\n\n/g, "\n")
               if (isProd) await writeFile(draftPath, text)
             })
           }, 5000)

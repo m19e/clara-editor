@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil"
 
 import {
+  isFallbackState,
   draftFilepathState,
   fontTypeState,
   fontSizeState,
@@ -9,6 +10,8 @@ import {
 } from "@/store"
 
 type ReturnType = [number, { increment: () => void; decrement: () => void }]
+
+export const useIsFallback = () => useRecoilState(isFallbackState)
 
 export const useDraftPath = () => useRecoilState(draftFilepathState)
 

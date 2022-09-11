@@ -22,6 +22,11 @@ const appStoreEffect: ElectronStoreEffect =
   }
 
 // App
+export const isFallbackState = atom({
+  key: "app/is-fallback",
+  default: false,
+})
+
 export const draftFilepathState = atom({
   key: "app/draft-filepath",
   default: "",

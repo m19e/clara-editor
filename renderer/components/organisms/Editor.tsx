@@ -2,7 +2,13 @@ import { useRef, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot } from "lexical"
 
-import { useFontType, useFontSize, useLineHeight, useLineWords } from "@/hooks"
+import {
+  useIsFallback,
+  useFontType,
+  useFontSize,
+  useLineHeight,
+  useLineWords,
+} from "@/hooks"
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin"
@@ -24,6 +30,7 @@ const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
 }
 
 export const Editor: FC = () => {
+  const [isFallback] = useIsFallback()
   const [ft] = useFontType()
   const [fs] = useFontSize()
   const [lh] = useLineHeight()
@@ -57,6 +64,7 @@ export const Editor: FC = () => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
+      {isFallback && <Fallback />}
       <div className="h-screen w-full">
         <div
           id="container"
@@ -107,6 +115,14 @@ const Placeholder: FC = () => {
   return (
     <div className="text-base-content pointer-events-none absolute top-0 right-0 select-none text-opacity-60">
       執筆を始める
+    </div>
+  )
+}
+
+const Fallback = () => {
+  return (
+    <div className="bg-base-100 fixed top-0 z-50 flex h-screen w-screen items-center justify-center">
+      <div className="border-base-content h-10 w-10 animate-spin rounded-full border-4 border-t-transparent"></div>
     </div>
   )
 }
