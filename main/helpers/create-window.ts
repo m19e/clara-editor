@@ -1,23 +1,8 @@
-import { screen, BrowserWindow, ipcMain, dialog } from "electron"
-import type {
-  BrowserWindowConstructorOptions,
-  OpenDialogOptions,
-} from "electron"
+import { screen, BrowserWindow } from "electron"
+import type { BrowserWindowConstructorOptions } from "electron"
 import Store from "electron-store"
 
-const addIpcListener = (mainWindow: BrowserWindow) => {
-  ipcMain.on("open-file-dialog", async (event, payload?: OpenDialogOptions) => {
-    if (!mainWindow) {
-      event.reply("open-file-dialog")
-      return
-    }
-
-    const value = await dialog.showOpenDialog(mainWindow, {
-      ...payload,
-    })
-    event.reply("open-file-dialog", value)
-  })
-}
+import { addIpcListener } from "./ipc"
 
 export const createWindow = (
   windowName: string,
