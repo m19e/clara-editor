@@ -2,14 +2,11 @@ import type { OpenDialogOptions, OpenDialogReturnValue } from "electron"
 import { useTheme } from "next-themes"
 import { Navbar } from "react-daisyui"
 
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
-
 import { ipc } from "@/lib/electron/ipc"
 import { useDraftPath, useFontType } from "@/hooks"
 
 export const Header = () => {
   const { theme, setTheme } = useTheme()
-  const [editor] = useLexicalComposerContext()
   const [, setDraftPath] = useDraftPath()
   const [ft] = useFontType()
 
@@ -33,8 +30,6 @@ export const Header = () => {
     }
     const [fp] = filePaths
     setDraftPath(fp)
-    // const draft = await readFile(fp, { encoding: "utf-8" })
-    // editor.update(() => $setTextContent(draft))
   }
 
   return (
