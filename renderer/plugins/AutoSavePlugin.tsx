@@ -5,9 +5,13 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 
 import { useDraftPath } from "@/hooks"
 
+const isProd = process.env.NODE_ENV === "production"
+
 export const AutoSavePlugin = (): null => {
   const [editor] = useLexicalComposerContext()
   const [draftPath] = useDraftPath()
+
+  let timerId: NodeJS.Timeout | null = null
 
   useEffect(() => {
     return editor.registerUpdateListener(
@@ -21,16 +25,19 @@ export const AutoSavePlugin = (): null => {
         if (draftPath === "") {
           return
         }
-        ;(async () => {
-          try {
-            const text = editorState.read(() => $getRoot().getTextContent())
-            await new Promise((resolve) => setTimeout(resolve, 5000))
-            await writeFile(draftPath, text)
-            console.log("Save draft to: ", draftPath)
-          } catch (error) {
-            console.error(error)
+        try {
+          if (timerId !== null) {
+            clearTimeout(timerId)
           }
-        })()
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          timerId = setTimeout(async () => {
+            const text = editorState.read(() => $getRoot().getTextContent())
+            if (isProd) await writeFile(draftPath, text)
+            console.log("Save draft to: ", draftPath, ` ${text.length}chars`)
+          }, 5000)
+        } catch (error) {
+          console.error(error)
+        }
       }
     )
   }, [editor, draftPath])
