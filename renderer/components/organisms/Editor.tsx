@@ -22,7 +22,6 @@ import { AutoLoadPlugin } from "@/plugins/AutoLoadPlugin"
 import { AutoSavePlugin } from "@/plugins/AutoSavePlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
 import { IpcListener } from "@/components/organisms/IpcListener"
-import { Header } from "@/components/organisms/Header"
 import { Footer } from "@/components/organisms/Footer"
 
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
@@ -88,8 +87,6 @@ export const Editor: FC = () => {
           </div>
         </div>
       </div>
-
-      <Header />
       <Footer />
 
       <AutoLoadPlugin />
