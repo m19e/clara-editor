@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "nextron-daisyui-boilerplate",
-  "description": "Boilerplate with Nextron(Next.js+Electron), Typescript, TailwindCSS, daisyUI(+react-daisyui)",
+  "name": "clara-editor-lexical",
+  "description": "Novel Editor with Vertical Typing",
   "version": "1.0.0",
   "author": "m19e",
   "main": "app/background.js",
