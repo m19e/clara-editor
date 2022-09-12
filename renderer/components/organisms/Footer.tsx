@@ -8,19 +8,33 @@ import {
   useLineHeight,
   useLineWords,
   useCharCount,
+  useSelectedCharCount,
 } from "@/hooks"
 
 export const Footer: FC = () => {
   const [ft] = useFontType()
-  const [cc] = useCharCount()
 
   return (
     <div className={`fixed bottom-0 w-full select-none ${ft}`}>
       <div className="group relative flex h-[4rem] flex-col items-center justify-end gap-2 p-0">
         <Control />
-        <span className="text-sm opacity-50">{cc}</span>
+        <CharCount />
       </div>
     </div>
+  )
+}
+
+const CharCount = () => {
+  const [cc] = useCharCount()
+  const [scc] = useSelectedCharCount()
+
+  const selected = scc === 0 ? "" : `${scc}/`
+
+  return (
+    <span className="text-sm opacity-50">
+      {selected}
+      {cc}
+    </span>
   )
 }
 

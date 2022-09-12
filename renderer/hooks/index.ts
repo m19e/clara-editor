@@ -8,6 +8,7 @@ import {
   lineHeightState,
   lineWordsState,
   charCountState,
+  selectedCharCountState,
 } from "@/store"
 
 type ReturnType = [number, { increment: () => void; decrement: () => void }]
@@ -19,6 +20,7 @@ export const useDraftPath = () => useRecoilState(draftFilepathState)
 export const useFontType = () => useRecoilState(fontTypeState)
 
 export const useCharCount = () => useRecoilState(charCountState)
+export const useSelectedCharCount = () => useRecoilState(selectedCharCountState)
 
 export const useFontSize = (): ReturnType => {
   const [fs, setFS] = useRecoilState(fontSizeState)

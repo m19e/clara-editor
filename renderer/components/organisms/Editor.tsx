@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
-import { $getRoot } from "lexical"
+import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
 
 import {
   useIsFallback,
@@ -9,6 +9,7 @@ import {
   useLineHeight,
   useLineWords,
   useCharCount,
+  useSelectedCharCount,
 } from "@/hooks"
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
@@ -43,6 +44,7 @@ export const Editor: FC = () => {
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
   const [, setCharCount] = useCharCount()
+  const [, setSelectedCharCount] = useSelectedCharCount()
 
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -105,12 +107,15 @@ export const Editor: FC = () => {
       <VerticalPlugin />
       <OnChangePlugin
         onChange={(state) =>
-          setCharCount(
-            state.read(() => getTextCharCount($getRoot().getTextContent()))
-          )
+          state.read(() => {
+            setCharCount(getTextCharCount($getRoot().getTextContent()))
+            const selection = $getSelection()
+            if ($isRangeSelection(selection)) {
+              setSelectedCharCount(getTextCharCount(selection.getTextContent()))
+            }
+          })
         }
         ignoreInitialChange={true}
-        ignoreSelectionChange={true}
       />
     </LexicalComposer>
   )

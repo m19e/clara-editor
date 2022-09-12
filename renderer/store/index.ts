@@ -63,4 +63,9 @@ export const charCountState = atom({
   default: 0,
 })
 
+export const selectedCharCountState = atom({
+  key: "editor/selected-char-count",
+  default: 0,
+})
+
 // View
