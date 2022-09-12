@@ -112,6 +112,8 @@ export const Editor: FC = () => {
             const selection = $getSelection()
             if ($isRangeSelection(selection)) {
               setSelectedCharCount(getTextCharCount(selection.getTextContent()))
+            } else {
+              setSelectedCharCount(0)
             }
           })
         }
