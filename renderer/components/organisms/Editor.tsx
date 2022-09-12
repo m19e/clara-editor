@@ -23,6 +23,7 @@ import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 import { AutoLoadPlugin } from "@/plugins/AutoLoadPlugin"
 import { AutoSavePlugin } from "@/plugins/AutoSavePlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
+import { ReplaceTextPlugin } from "@/plugins/ReplaceTextPlugin"
 import { IpcListener } from "@/components/organisms/IpcListener"
 import { Footer } from "@/components/organisms/Footer"
 
@@ -105,6 +106,7 @@ export const Editor: FC = () => {
       <AutoHorizontalScrollPlugin scrollRef={containerRef} />
       <HistoryPlugin />
       <VerticalPlugin />
+      <ReplaceTextPlugin />
       <OnChangePlugin
         onChange={(state) =>
           state.read(() => {
