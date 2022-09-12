@@ -122,3 +122,13 @@
     @apply opacity-100;
   }
 }
+
+html[data-theme="light"] .text-base-content ::selection {
+  color: #f9f9fa;
+  background-color: #5f626a;
+}
+
+html[data-theme="dark"] .text-base-content ::selection {
+  color: #44454a;
+  background-color: #bec1c6;
+}

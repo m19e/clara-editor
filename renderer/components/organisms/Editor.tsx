@@ -109,8 +109,8 @@ export const Editor: FC = () => {
             state.read(() => getTextCharCount($getRoot().getTextContent()))
           )
         }
-        ignoreInitialChange
-        ignoreSelectionChange
+        ignoreInitialChange={true}
+        ignoreSelectionChange={true}
       />
     </LexicalComposer>
   )
