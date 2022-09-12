@@ -71,13 +71,13 @@ const Control: FC = () => {
 
   return (
     <div
-      className={`absolute -bottom-[7rem] flex w-full justify-center delay-300 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(7rem-1.5rem)]`}
+      className={`absolute -bottom-[7rem] flex w-full justify-center duration-150 hover:!bottom-0 hover:delay-300 group-hover:-bottom-[calc(7rem-1.5rem)]`}
     >
-      <div className={`bg-base-200 flex h-[7rem] w-full flex-col items-center`}>
+      <div className="bg-base-200 flex h-[7rem] w-full flex-col items-center">
         <div className="flex h-[1.5rem] w-16 items-center justify-center">
           <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
-        <div className={"mr-6 flex items-center h-20 py-1 " + ft}>
+        <div className={`mr-6 flex h-20 items-center py-1 ${ft}`}>
           <div className="nested-group flex h-full flex-col justify-end">
             <span className="whitespace-pre text-center opacity-75">
               {isMincho ? "明朝" : "ゴシック"}
