@@ -71,7 +71,7 @@ const Control: FC = () => {
 
   return (
     <div
-      className={`absolute -bottom-[7rem] flex w-full justify-center delay-500 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(7rem-1.5rem)]`}
+      className={`absolute -bottom-[7rem] flex w-full justify-center delay-300 duration-150 hover:!bottom-0 group-hover:-bottom-[calc(7rem-1.5rem)]`}
     >
       <div className={`bg-base-200 flex h-[7rem] w-full flex-col items-center`}>
         <div className="flex h-[1.5rem] w-16 items-center justify-center">
