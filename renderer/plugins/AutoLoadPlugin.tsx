@@ -18,7 +18,7 @@ export const AutoLoadPlugin: FC = () => {
       setIsFallback(true)
       const draft = await readFile(draftPath, { encoding: "utf-8" })
       editor.update(() => $setTextContent(draft))
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       setIsFallback(false)
     }
     if (isProd) f()
