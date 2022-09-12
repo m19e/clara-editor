@@ -58,4 +58,9 @@ export const lineWordsState = atom({
   effects: [appStoreEffect("line-words")],
 })
 
+export const charCountState = atom({
+  key: "editor/char-count",
+  default: 0,
+})
+
 // View

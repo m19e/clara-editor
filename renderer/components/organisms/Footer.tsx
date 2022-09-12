@@ -2,13 +2,23 @@
 import type { FC } from "react"
 import { useMemo, Fragment } from "react"
 
-import { useFontType, useFontSize, useLineHeight, useLineWords } from "@/hooks"
+import {
+  useFontType,
+  useFontSize,
+  useLineHeight,
+  useLineWords,
+  useCharCount,
+} from "@/hooks"
 
 export const Footer: FC = () => {
+  const [ft] = useFontType()
+  const [cc] = useCharCount()
+
   return (
-    <div className="fixed bottom-0 w-full select-none">
-      <div className="group relative h-[4rem] gap-2 p-0">
+    <div className={`fixed bottom-0 w-full select-none ${ft}`}>
+      <div className="group relative flex h-[4rem] flex-col items-center justify-end gap-2 p-0">
         <Control />
+        <span className="text-sm opacity-50">{cc}</span>
       </div>
     </div>
   )
@@ -71,13 +81,13 @@ const Control: FC = () => {
 
   return (
     <div
-      className={`absolute -bottom-[7rem] flex w-full justify-center duration-150 hover:!bottom-0 hover:delay-300 group-hover:-bottom-[calc(7rem-1.5rem)]`}
+      className={`absolute -bottom-[7rem] z-20 flex w-full justify-center duration-150 hover:!bottom-0 hover:delay-300 group-hover:-bottom-[calc(7rem-1.5rem)]`}
     >
       <div className="bg-base-200 flex h-[7rem] w-full flex-col items-center">
         <div className="flex h-[1.5rem] w-16 items-center justify-center">
           <span className="h-1 w-full rounded bg-gray-400"></span>
         </div>
-        <div className={`mr-6 flex h-20 items-center py-1 ${ft}`}>
+        <div className="mr-6 flex h-20 items-center py-1">
           <div className="nested-group flex h-full flex-col justify-end">
             <span className="whitespace-pre text-center opacity-75">
               {isMincho ? "明朝" : "ゴシック"}

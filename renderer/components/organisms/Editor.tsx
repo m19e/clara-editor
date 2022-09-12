@@ -8,6 +8,7 @@ import {
   useFontSize,
   useLineHeight,
   useLineWords,
+  useCharCount,
 } from "@/hooks"
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
@@ -24,6 +25,12 @@ import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin
 import { IpcListener } from "@/components/organisms/IpcListener"
 import { Footer } from "@/components/organisms/Footer"
 
+const getTextCharCount = (text: string): number => {
+  const regex = /(?:\r\n|\r|\n)/g
+  const cleanString = text.replace(regex, "").trim()
+  return Array.from(cleanString).length
+}
+
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
   namespace: "ClaraEditor",
   onError: (error) => console.error(error),
@@ -35,6 +42,7 @@ export const Editor: FC = () => {
   const [fs] = useFontSize()
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
+  const [, setCharCount] = useCharCount()
 
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -97,10 +105,8 @@ export const Editor: FC = () => {
       <VerticalPlugin />
       <OnChangePlugin
         onChange={(state) =>
-          console.log(
-            state.read(
-              () => $getRoot().getTextContent().replace(/\n/g, "").length
-            )
+          setCharCount(
+            state.read(() => getTextCharCount($getRoot().getTextContent()))
           )
         }
         ignoreInitialChange
