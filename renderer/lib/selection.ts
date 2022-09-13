@@ -1,5 +1,3 @@
-
-
 import type {
   TextNode,
   ElementNode,
@@ -158,6 +156,14 @@ export function $moveCaretSelection(
     isBackward,
     granularity
   )
+}
+
+export function $moveWord(
+  selection: RangeSelection,
+  isHoldingShift: boolean,
+  isBackward: boolean
+): void {
+  $moveCaretSelection(selection, isHoldingShift, isBackward, "word")
 }
 
 export function $moveLine(
