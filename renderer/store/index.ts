@@ -68,4 +68,9 @@ export const selectedCharCountState = atom({
   default: 0,
 })
 
+export const isSavedState = atom({
+  key: "editor/is-saved",
+  default: true,
+})
+
 // View

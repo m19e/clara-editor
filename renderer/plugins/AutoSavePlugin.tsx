@@ -3,15 +3,14 @@ import { useEffect } from "react"
 import { $getRoot } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
-import { useDraftPath } from "@/hooks"
-
-type PlainTextChild = { type: "text"; text: string } | { type: "linebreak" }
+import { useDraftPath, useIsSaved } from "@/hooks"
 
 const isProd = process.env.NODE_ENV === "production"
 
 export const AutoSavePlugin = (): null => {
   const [editor] = useLexicalComposerContext()
   const [draftPath] = useDraftPath()
+  const [, setIsSaved] = useIsSaved()
 
   let timerId: NodeJS.Timeout | null = null
 
@@ -28,6 +27,7 @@ export const AutoSavePlugin = (): null => {
           return
         }
         try {
+          setIsSaved(false)
           if (timerId !== null) {
             clearTimeout(timerId)
           }
@@ -38,6 +38,7 @@ export const AutoSavePlugin = (): null => {
                 .getTextContent(true, false)
                 .replace(/\n\n/g, "\n")
               if (isProd) await writeFile(draftPath, text)
+              setIsSaved(true)
             })
           }, 5000)
         } catch (error) {

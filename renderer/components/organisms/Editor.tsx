@@ -23,6 +23,8 @@ import { VerticalPlugin } from "@/plugins/VerticalPlugin"
 import { AutoLoadPlugin } from "@/plugins/AutoLoadPlugin"
 import { AutoSavePlugin } from "@/plugins/AutoSavePlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
+
+import { MetaHead } from "@/foundations/MetaHead"
 import { IpcListener } from "@/components/organisms/IpcListener"
 import { Footer } from "@/components/organisms/Footer"
 
@@ -74,6 +76,7 @@ export const Editor: FC = () => {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
+      <MetaHead />
       <IpcListener />
       {isFallback && <Fallback />}
       <div className="h-screen w-full">
