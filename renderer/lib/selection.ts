@@ -1,9 +1,5 @@
-import {
-  $isTextNode,
-  $isElementNode,
-  $getDecoratorNode,
-  $isDecoratorNode,
-} from "lexical"
+
+
 import type {
   TextNode,
   ElementNode,
@@ -80,48 +76,48 @@ function $modifyLineSelection(
   isBackward: boolean,
   granularity: "character" | "word" | "lineboundary" | "line"
 ): void {
-  const focus = selection.focus
-  const anchor = selection.anchor
+  // const focus = selection.focus
+  // const anchor = selection.anchor
   const collapse = alter === "move"
 
   // Handle the selection movement around decorators.
   // TODO: remove decorator logic
-  const possibleNode = $getDecoratorNode(focus, isBackward)
-  if ($isDecoratorNode(possibleNode) && !possibleNode.isIsolated()) {
-    const sibling = isBackward
-      ? possibleNode.getPreviousSibling()
-      : possibleNode.getNextSibling()
+  // const possibleNode = $getDecoratorNode(focus, isBackward)
+  // if ($isDecoratorNode(possibleNode) && !possibleNode.isIsolated()) {
+  //   const sibling = isBackward
+  //     ? possibleNode.getPreviousSibling()
+  //     : possibleNode.getNextSibling()
 
-    if (!$isTextNode(sibling)) {
-      const parent = possibleNode.getParentOrThrow()
-      let offset
-      let elementKey
+  //   if (!$isTextNode(sibling)) {
+  //     const parent = possibleNode.getParentOrThrow()
+  //     let offset
+  //     let elementKey
 
-      if ($isElementNode(sibling)) {
-        elementKey = sibling.__key
-        offset = isBackward ? sibling.getChildrenSize() : 0
-      } else {
-        offset = possibleNode.getIndexWithinParent()
-        elementKey = parent.__key
-        if (!isBackward) {
-          offset++
-        }
-      }
-      focus.set(elementKey, offset, "element")
-      if (collapse) {
-        anchor.set(elementKey, offset, "element")
-      }
-      return
-    } else {
-      const siblingKey = sibling.__key
-      const offset = isBackward ? sibling.getTextContent().length : 0
-      focus.set(siblingKey, offset, "text")
-      if (collapse) {
-        anchor.set(siblingKey, offset, "text")
-      }
-      return
-    }
-  }
+  //     if ($isElementNode(sibling)) {
+  //       elementKey = sibling.__key
+  //       offset = isBackward ? sibling.getChildrenSize() : 0
+  //     } else {
+  //       offset = possibleNode.getIndexWithinParent()
+  //       elementKey = parent.__key
+  //       if (!isBackward) {
+  //         offset++
+  //       }
+  //     }
+  //     focus.set(elementKey, offset, "element")
+  //     if (collapse) {
+  //       anchor.set(elementKey, offset, "element")
+  //     }
+  //     return
+  //   } else {
+  //     const siblingKey = sibling.__key
+  //     const offset = isBackward ? sibling.getTextContent().length : 0
+  //     focus.set(siblingKey, offset, "text")
+  //     if (collapse) {
+  //       anchor.set(siblingKey, offset, "text")
+  //     }
+  //     return
+  //   }
+  // }
 
   const domSelection = getDOMSelection()
 
