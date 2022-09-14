@@ -1,5 +1,5 @@
 import { BrowserWindow, ipcMain, dialog } from "electron"
-import type { OpenDialogOptions } from "electron"
+import type { OpenDialogOptions, SaveDialogOptions } from "electron"
 
 export const addIpcListener = (mainWindow: BrowserWindow) => {
   ipcMain.on("open-file-dialog", async (event, payload?: OpenDialogOptions) => {
@@ -12,6 +12,17 @@ export const addIpcListener = (mainWindow: BrowserWindow) => {
       ...payload,
     })
     event.reply("open-file-dialog", value)
+  })
+  ipcMain.on("open-save-dialog", async (event, payload?: SaveDialogOptions) => {
+    if (!mainWindow) {
+      event.reply("open-save-dialog")
+      return
+    }
+
+    const value = await dialog.showSaveDialog(mainWindow, {
+      ...payload,
+    })
+    event.reply("open-save-dialog", value)
   })
 }
 
