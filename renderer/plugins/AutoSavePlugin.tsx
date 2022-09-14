@@ -1,7 +1,7 @@
 import { writeFile } from "fs/promises"
 import { ipcRenderer } from "electron"
 import type { SaveDialogOptions, SaveDialogReturnValue } from "electron"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { $getRoot } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
@@ -14,6 +14,8 @@ export const AutoSavePlugin = (): null => {
   const [editor] = useLexicalComposerContext()
   const [draftPath, setDraftPath] = useDraftPath()
   const [, setIsSaved] = useIsSaved()
+
+  const shouldSave = useRef(false)
 
   let timerId: NodeJS.Timeout | null = null
 
@@ -57,8 +59,12 @@ export const AutoSavePlugin = (): null => {
         .read(() =>
           $getRoot().getTextContent(true, false).replace(/\n\n/g, "\n")
         )
-      await writeFile(draftPath, text)
-      setIsSaved(true)
+      try {
+        await writeFile(draftPath, text)
+        setIsSaved(true)
+      } catch (error) {
+        console.error(error)
+      }
     })
     ipcRenderer.on("save-new-draft", async (_, payload: string) => {
       if (timerId !== null) {
@@ -69,9 +75,18 @@ export const AutoSavePlugin = (): null => {
         .read(() =>
           $getRoot().getTextContent(true, false).replace(/\n\n/g, "\n")
         )
-      await writeFile(payload, text)
+      try {
+        await writeFile(payload, text)
+        setDraftPath(payload)
+      } catch (error) {
+        console.error(error)
+      }
     })
   }, [])
+
+  useEffect(() => {
+    shouldSave.current = false
+  }, [draftPath])
 
   useEffect(() => {
     return editor.registerUpdateListener(
@@ -83,6 +98,10 @@ export const AutoSavePlugin = (): null => {
           return
         }
         if (draftPath === "") {
+          return
+        }
+        if (!shouldSave.current) {
+          shouldSave.current = true
           return
         }
 
