@@ -15,7 +15,11 @@ export const addIpcListener = (mainWindow: BrowserWindow) => {
   })
 }
 
-type MainChannel = "recieve-draft-path" | "toggle-color-theme"
+type MainChannel =
+  | "recieve-draft-path"
+  | "toggle-color-theme"
+  | "save-draft"
+  | "save-new-draft"
 
 export const ipc = <T, U>(
   mainWindow: BrowserWindow,

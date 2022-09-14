@@ -106,6 +106,34 @@ export const createWindow = (
             await ipc<string, void>(win, "recieve-draft-path", fp)
           },
         },
+        {
+          id: "save-draft",
+          label: "保存",
+          accelerator: "CmdOrCtrl+S",
+          click: (_, win) => {
+            ipc(win, "save-draft")
+          },
+        },
+        {
+          id: "save-new-draft",
+          label: "名前を付けて保存",
+          accelerator: "CmdOrCtrl+Shift+S",
+          click: async (_, win) => {
+            const res = await dialog.showSaveDialog(win, {
+              title: "名前を付けて保存",
+              filters: [
+                {
+                  name: "テキストファイル",
+                  extensions: ["txt"],
+                },
+              ],
+              defaultPath: "無題.txt",
+            })
+            const { canceled, filePath } = res
+            if (canceled) return
+            await ipc(win, "save-new-draft", filePath)
+          },
+        },
       ],
     },
     {
