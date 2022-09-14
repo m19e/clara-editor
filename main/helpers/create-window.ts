@@ -1,5 +1,9 @@
 import { screen, BrowserWindow, Menu, dialog } from "electron"
-import type { BrowserWindowConstructorOptions } from "electron"
+import type {
+  BrowserWindowConstructorOptions,
+  MenuItemConstructorOptions,
+  MenuItem,
+} from "electron"
 import Store from "electron-store"
 
 import { addIpcListener, ipc } from "./ipc"
@@ -79,13 +83,30 @@ export const createWindow = (
   }
   const win = new BrowserWindow(browserOptions)
 
-  const menu = Menu.buildFromTemplate([
+  ;(async () => {
+    const menu = await createMenu(win)
+    Menu.setApplicationMenu(menu)
+  })()
+
+  addIpcListener(win)
+
+  win.on("close", saveState)
+
+  return win
+}
+
+type Theme = "light" | "dark"
+
+const createMenu = async (win: BrowserWindow) => {
+  const theme = await getThemeFromLocalStorage(win)
+
+  const template: (MenuItemConstructorOptions | MenuItem)[] = [
     {
-      label: "原稿",
+      label: "ファイル",
       submenu: [
         {
           id: "open-draft",
-          label: "開く…",
+          label: "開く",
           accelerator: "CmdOrCtrl+O",
           click: async (_, win) => {
             const res = await dialog.showOpenDialog(win, {
@@ -137,11 +158,14 @@ export const createWindow = (
       ],
     },
     {
-      label: "設定",
+      label: "表示",
       submenu: [
         {
           id: "dark-mode",
           label: "ダークモード",
+          accelerator: "CmdOrCtrl+Shift+D",
+          type: "checkbox",
+          checked: theme === "dark",
           click: async (_, win) => {
             if (win) {
               await ipc<"light" | "dark", void>(win, "toggle-color-theme")
@@ -150,14 +174,14 @@ export const createWindow = (
         },
       ],
     },
-  ])
-  Menu.setApplicationMenu(menu)
+  ]
 
-  addIpcListener(win)
+  return Menu.buildFromTemplate(template)
+}
 
-  win.on("close", saveState)
-
-  return win
+const getThemeFromLocalStorage = async (win: BrowserWindow): Promise<Theme> => {
+  return (await win.webContents.executeJavaScript("({...localStorage});", true))
+    .theme as Theme
 }
 
 export default createWindow
