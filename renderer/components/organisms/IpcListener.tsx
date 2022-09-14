@@ -5,15 +5,15 @@ import { useTheme } from "next-themes"
 import { useDraftPath } from "@/hooks"
 
 export const IpcListener = () => {
-  const [, setDraftPath] = useDraftPath()
   const { theme, setTheme } = useTheme()
+  const [, setDraftPath] = useDraftPath()
 
   useEffect(() => {
-    ipcRenderer.on("recieve-draft-path", async (_, payload: string) => {
-      setDraftPath(payload)
-    })
-    ipcRenderer.on("toggle-color-theme", async () => {
+    ipcRenderer.on("toggle-color-theme", () => {
       setTheme(theme === "dark" ? "light" : "dark")
+    })
+    ipcRenderer.on("recieve-draft-path", (_, payload: string) => {
+      setDraftPath(payload)
     })
   }, [theme])
 
