@@ -1,23 +1,54 @@
 import { writeFile } from "fs/promises"
 import { ipcRenderer } from "electron"
+import type { SaveDialogOptions, SaveDialogReturnValue } from "electron"
 import { useEffect } from "react"
 import { $getRoot } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
+import { ipc } from "@/lib/electron/ipc"
 import { useDraftPath, useIsSaved } from "@/hooks"
 
 const isProd = process.env.NODE_ENV === "production"
 
 export const AutoSavePlugin = (): null => {
   const [editor] = useLexicalComposerContext()
-  const [draftPath] = useDraftPath()
+  const [draftPath, setDraftPath] = useDraftPath()
   const [, setIsSaved] = useIsSaved()
 
   let timerId: NodeJS.Timeout | null = null
 
   useEffect(() => {
     ipcRenderer.on("save-draft", async () => {
-      if (draftPath === "") return
+      if (draftPath === "") {
+        const res = await ipc<SaveDialogOptions, SaveDialogReturnValue>(
+          "open-save-dialog",
+          {
+            title: "名前を付けて保存",
+            filters: [
+              {
+                name: "テキストファイル",
+                extensions: ["txt"],
+              },
+            ],
+            defaultPath: "無題.txt",
+          }
+        )
+        const { filePath, canceled } = res
+        if (canceled) return
+        try {
+          const text = editor
+            .getEditorState()
+            .read(() =>
+              $getRoot().getTextContent(true, false).replace(/\n\n/g, "\n")
+            )
+          await writeFile(filePath, text)
+          setDraftPath(filePath)
+          setIsSaved(true)
+        } catch (error) {
+          console.error(error)
+        }
+        return
+      }
       if (timerId !== null) {
         clearTimeout(timerId)
       }
