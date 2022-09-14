@@ -51,6 +51,7 @@ export const AutoSavePlugin = (): null => {
         }
         return
       }
+
       if (timerId !== null) {
         clearTimeout(timerId)
       }
@@ -82,7 +83,7 @@ export const AutoSavePlugin = (): null => {
         console.error(error)
       }
     })
-  }, [])
+  }, [draftPath])
 
   useEffect(() => {
     shouldSave.current = false
