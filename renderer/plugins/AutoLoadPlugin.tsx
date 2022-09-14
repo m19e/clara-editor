@@ -11,17 +11,22 @@ const isProd = process.env.NODE_ENV === "production"
 export const AutoLoadPlugin: FC = () => {
   const [editor] = useLexicalComposerContext()
   const [, setIsFallback] = useIsFallback()
-  const [draftPath] = useDraftPath()
+  const [draftPath, setDraftPath] = useDraftPath()
 
   useEffect(() => {
     const f = async () => {
       setIsFallback(true)
-      const draft = await readFile(draftPath, { encoding: "utf-8" })
-      editor.update(() => $setTextContent(draft))
+      try {
+        const draft = await readFile(draftPath, { encoding: "utf-8" })
+        editor.update(() => $setTextContent(draft))
+      } catch (e) {
+        setDraftPath("")
+        console.error(e)
+      }
       await new Promise((resolve) => setTimeout(resolve, 1000))
       setIsFallback(false)
     }
-    if (isProd) f()
+    if (isProd && draftPath) f()
   }, [draftPath])
 
   return null
