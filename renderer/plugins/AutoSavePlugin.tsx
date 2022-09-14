@@ -83,6 +83,11 @@ export const AutoSavePlugin = (): null => {
         console.error(error)
       }
     })
+
+    return () => {
+      ipcRenderer.removeAllListeners("save-draft")
+      ipcRenderer.removeAllListeners("save-new-draft")
+    }
   }, [draftPath])
 
   useEffect(() => {

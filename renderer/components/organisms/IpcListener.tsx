@@ -15,6 +15,11 @@ export const IpcListener = () => {
     ipcRenderer.on("recieve-draft-path", (_, payload: string) => {
       setDraftPath(payload)
     })
+
+    return () => {
+      ipcRenderer.removeAllListeners("toggle-color-theme")
+      ipcRenderer.removeAllListeners("recieve-draft-path")
+    }
   }, [theme])
 
   return null
