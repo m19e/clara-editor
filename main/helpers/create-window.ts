@@ -172,6 +172,16 @@ const createMenu = async (win: BrowserWindow) => {
             }
           },
         },
+        {
+          id: "char-count",
+          label: "字数カウント",
+          accelerator: "CmdOrCtrl+Shift+L",
+          type: "checkbox",
+          checked: true,
+          click: async (_, win) => {
+            await ipc(win, "toggle-char-count")
+          },
+        },
       ],
     },
   ]

@@ -9,6 +9,7 @@ import {
   lineWordsState,
   charCountState,
   selectedCharCountState,
+  displayCharCountState,
   isSavedState,
 } from "@/store"
 
@@ -22,6 +23,7 @@ export const useFontType = () => useRecoilState(fontTypeState)
 
 export const useCharCount = () => useRecoilState(charCountState)
 export const useSelectedCharCount = () => useRecoilState(selectedCharCountState)
+export const useDisplayCharCount = () => useRecoilState(displayCharCountState)
 
 export const useIsSaved = () => useRecoilState(isSavedState)
 

@@ -9,6 +9,7 @@ import {
   useLineWords,
   useCharCount,
   useSelectedCharCount,
+  useDisplayCharCount,
 } from "@/hooks"
 
 export const Footer: FC = () => {
@@ -27,11 +28,13 @@ export const Footer: FC = () => {
 const CharCount = () => {
   const [cc] = useCharCount()
   const [scc] = useSelectedCharCount()
+  const [display] = useDisplayCharCount()
 
+  const opacity = display ? "opacity-50" : "opacity-0"
   const selected = scc === 0 ? "" : `${scc}/`
 
   return (
-    <span className="text-sm opacity-50">
+    <span className={`text-sm ${opacity}`}>
       {selected}
       {cc}
     </span>
