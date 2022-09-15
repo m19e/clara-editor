@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 module.exports = {
   content: [
     "./renderer/pages/**/*.{js,ts,jsx,tsx}",
@@ -8,5 +9,25 @@ module.exports = {
   theme: {
     extend: {},
   },
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+          "base-100": "#F9F9FA",
+          "base-200": "#F9F9FA",
+          "base-content": "#141426",
+        },
+      },
+      {
+        dark: {
+          ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
+          "base-100": "#44454A",
+          "base-200": "#5F6269",
+          "base-content": "#FDFFFE",
+        },
+      },
+    ],
+  },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
-};
+}

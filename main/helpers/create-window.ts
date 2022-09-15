@@ -1,9 +1,12 @@
-import {
-  screen,
-  BrowserWindow,
+import { screen, BrowserWindow, Menu, dialog } from "electron"
+import type {
   BrowserWindowConstructorOptions,
+  MenuItemConstructorOptions,
+  MenuItem,
 } from "electron"
 import Store from "electron-store"
+
+import { addIpcListener, ipc } from "./ipc"
 
 export const createWindow = (
   windowName: string,
@@ -80,9 +83,149 @@ export const createWindow = (
   }
   const win = new BrowserWindow(browserOptions)
 
+  ;(async () => {
+    const menu = await createMenu(win)
+    Menu.setApplicationMenu(menu)
+  })()
+
+  addIpcListener(win)
+
   win.on("close", saveState)
 
   return win
+}
+
+type Theme = "light" | "dark"
+
+const createMenu = async (win: BrowserWindow) => {
+  const theme = await getThemeFromLocalStorage(win)
+
+  const template: (MenuItemConstructorOptions | MenuItem)[] = [
+    {
+      label: "ファイル",
+      submenu: [
+        {
+          id: "open-draft",
+          label: "開く",
+          accelerator: "CmdOrCtrl+O",
+          click: async (_, win) => {
+            const res = await dialog.showOpenDialog(win, {
+              title: "ファイルを開く",
+              filters: [
+                {
+                  name: "テキストファイル",
+                  extensions: ["txt"],
+                },
+              ],
+              properties: ["openFile"],
+            })
+            const { filePaths, canceled } = res
+            if (canceled || filePaths.length !== 1) {
+              return
+            }
+            const [fp] = filePaths
+            await ipc<string, void>(win, "recieve-draft-path", fp)
+          },
+        },
+        {
+          id: "save-draft",
+          label: "保存",
+          accelerator: "CmdOrCtrl+S",
+          click: (_, win) => {
+            ipc(win, "save-draft")
+          },
+        },
+        {
+          id: "save-new-draft",
+          label: "名前を付けて保存",
+          accelerator: "CmdOrCtrl+Shift+S",
+          click: async (_, win) => {
+            const res = await dialog.showSaveDialog(win, {
+              title: "名前を付けて保存",
+              filters: [
+                {
+                  name: "テキストファイル",
+                  extensions: ["txt"],
+                },
+              ],
+              defaultPath: "無題.txt",
+            })
+            const { canceled, filePath } = res
+            if (canceled) return
+            await ipc(win, "save-new-draft", filePath)
+          },
+        },
+      ],
+    },
+    {
+      label: "表示",
+      submenu: [
+        {
+          id: "dark-mode",
+          label: "ダークモード",
+          accelerator: "CmdOrCtrl+Shift+D",
+          type: "checkbox",
+          checked: theme === "dark",
+          click: async (_, win) => {
+            if (win) {
+              await ipc(win, "toggle-color-theme")
+            }
+          },
+        },
+        {
+          id: "char-count",
+          label: "字数カウント",
+          accelerator: "CmdOrCtrl+Shift+L",
+          type: "checkbox",
+          checked: true,
+          click: async (_, win) => {
+            await ipc(win, "toggle-char-count")
+          },
+        },
+        {
+          type: "separator",
+        },
+        {
+          label: "全画面",
+          sublabel: "Escで戻る",
+          accelerator: (() => {
+            if (process.platform === "darwin") {
+              return "Ctrl+Cmd+F"
+            } else {
+              return "F11"
+            }
+          })(),
+          click: (_, win) => {
+            if (win) {
+              const isF = win.isFullScreen()
+              win.setFullScreen(!isF)
+              win.setMenuBarVisibility(isF)
+            }
+          },
+        },
+        {
+          label: "全画面解除",
+          accelerator: "Esc",
+          visible: false,
+          click: (_, win) => {
+            if (win && win.isFullScreen()) {
+              win.setFullScreen(false)
+              win.setMenuBarVisibility(true)
+            }
+          },
+        },
+      ],
+    },
+  ]
+
+  return Menu.buildFromTemplate(template)
+}
+
+const getThemeFromLocalStorage = async (win: BrowserWindow): Promise<Theme> => {
+  return (
+    ((await win.webContents.executeJavaScript("({...localStorage});", true))
+      .theme as Theme) || "light"
+  )
 }
 
 export default createWindow
