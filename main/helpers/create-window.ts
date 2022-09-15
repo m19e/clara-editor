@@ -182,6 +182,38 @@ const createMenu = async (win: BrowserWindow) => {
             await ipc(win, "toggle-char-count")
           },
         },
+        {
+          type: "separator",
+        },
+        {
+          label: "全画面",
+          sublabel: "Escで戻る",
+          accelerator: (() => {
+            if (process.platform === "darwin") {
+              return "Ctrl+Cmd+F"
+            } else {
+              return "F11"
+            }
+          })(),
+          click: (_, win) => {
+            if (win) {
+              const isF = win.isFullScreen()
+              win.setFullScreen(!isF)
+              win.setMenuBarVisibility(isF)
+            }
+          },
+        },
+        {
+          label: "全画面解除",
+          accelerator: "Esc",
+          visible: false,
+          click: (_, win) => {
+            if (win && win.isFullScreen()) {
+              win.setFullScreen(false)
+              win.setMenuBarVisibility(true)
+            }
+          },
+        },
       ],
     },
   ]
