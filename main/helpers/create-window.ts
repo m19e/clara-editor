@@ -190,8 +190,10 @@ const createMenu = async (win: BrowserWindow) => {
 }
 
 const getThemeFromLocalStorage = async (win: BrowserWindow): Promise<Theme> => {
-  return (await win.webContents.executeJavaScript("({...localStorage});", true))
-    .theme as Theme
+  return (
+    ((await win.webContents.executeJavaScript("({...localStorage});", true))
+      .theme as Theme) || "light"
+  )
 }
 
 export default createWindow
