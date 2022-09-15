@@ -104,7 +104,10 @@ export const Editor: FC = () => {
             >
               <PlainTextPlugin
                 contentEditable={
-                  <ContentEditable className="text-base-content break-all text-justify focus:outline-none" />
+                  <ContentEditable
+                    className="text-base-content break-all text-justify focus:outline-none"
+                    spellCheck={false}
+                  />
                 }
                 placeholder={<Placeholder />}
               />
