@@ -168,7 +168,7 @@ const createMenu = async (win: BrowserWindow) => {
           checked: theme === "dark",
           click: async (_, win) => {
             if (win) {
-              await ipc<"light" | "dark", void>(win, "toggle-color-theme")
+              await ipc(win, "toggle-color-theme")
             }
           },
         },
