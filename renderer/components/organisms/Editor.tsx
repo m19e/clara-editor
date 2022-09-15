@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
+import type { EditorState } from "lexical"
 
 import {
   useIsFallback,
@@ -73,6 +74,17 @@ export const Editor: FC = () => {
       })
     }
   }
+  const handleEditorChange = (state: EditorState) => {
+    state.read(() => {
+      setCharCount(getTextCharCount($getRoot().getTextContent()))
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        setSelectedCharCount(getTextCharCount(selection.getTextContent()))
+      } else {
+        setSelectedCharCount(0)
+      }
+    })
+  }
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -109,17 +121,7 @@ export const Editor: FC = () => {
       <HistoryPlugin />
       <VerticalPlugin />
       <OnChangePlugin
-        onChange={(state) =>
-          state.read(() => {
-            setCharCount(getTextCharCount($getRoot().getTextContent()))
-            const selection = $getSelection()
-            if ($isRangeSelection(selection)) {
-              setSelectedCharCount(getTextCharCount(selection.getTextContent()))
-            } else {
-              setSelectedCharCount(0)
-            }
-          })
-        }
+        onChange={handleEditorChange}
         ignoreInitialChange={true}
       />
     </LexicalComposer>
