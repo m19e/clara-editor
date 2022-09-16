@@ -188,13 +188,7 @@ const createMenu = async (win: BrowserWindow) => {
         {
           label: "全画面",
           sublabel: "Escで戻る",
-          accelerator: (() => {
-            if (process.platform === "darwin") {
-              return "Ctrl+Cmd+F"
-            } else {
-              return "F11"
-            }
-          })(),
+          accelerator: process.platform === "darwin" ? "Ctrl+Cmd+F" : "F11",
           click: (_, win) => {
             if (win) {
               const isF = win.isFullScreen()
