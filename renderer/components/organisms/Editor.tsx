@@ -21,6 +21,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
+import { ReplaceTextPlugin } from "@/plugins/ReplaceTextPlugin"
 import { AutoLoadPlugin } from "@/plugins/AutoLoadPlugin"
 import { AutoSavePlugin } from "@/plugins/AutoSavePlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
@@ -117,6 +118,7 @@ export const Editor: FC = () => {
       </div>
       <Footer />
 
+      <ReplaceTextPlugin />
       <AutoLoadPlugin />
       <AutoSavePlugin />
       <AutoFocusPlugin defaultSelection="rootEnd" />
