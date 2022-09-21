@@ -3,12 +3,32 @@ import { ipcRenderer } from "electron"
 import type { SaveDialogOptions, SaveDialogReturnValue } from "electron"
 import { useEffect, useRef } from "react"
 import { $getRoot } from "lexical"
+import type { EditorState } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
 import { ipc } from "@/lib/electron/ipc"
 import { useDraftPath, useIsSaved } from "@/hooks"
 
 const isProd = process.env.NODE_ENV === "production"
+
+const getTextFromEditorState = (editorState: EditorState) => {
+  return editorState.read(() => $getRoot().getTextContent(true, false))
+}
+
+const saveDraft = async (
+  filepath: string,
+  editorState: EditorState
+): Promise<null | string> => {
+  if (!isProd) return
+
+  const text = getTextFromEditorState(editorState)
+  try {
+    await writeFile(filepath, text)
+    return null
+  } catch (error) {
+    return JSON.stringify(error)
+  }
+}
 
 export const AutoSavePlugin = (): null => {
   const [editor] = useLexicalComposerContext()
@@ -19,79 +39,59 @@ export const AutoSavePlugin = (): null => {
 
   let timerId: NodeJS.Timeout | null = null
 
+  const createAndSaveDraft = async (editorState: EditorState) => {
+    const res = await ipc<SaveDialogOptions, SaveDialogReturnValue>(
+      "open-save-dialog",
+      {
+        title: "名前を付けて保存",
+        filters: [
+          {
+            name: "テキストファイル",
+            extensions: ["txt"],
+          },
+        ],
+        defaultPath: "無題.txt",
+      }
+    )
+    const { filePath, canceled } = res
+    if (canceled) return
+
+    const err = await saveDraft(filePath, editorState)
+    if (err) return
+
+    setDraftPath(filePath)
+    setIsSaved(true)
+  }
+
   useEffect(() => {
+    shouldSave.current = false
+
     ipcRenderer.on("save-draft", async () => {
       if (draftPath === "") {
-        const res = await ipc<SaveDialogOptions, SaveDialogReturnValue>(
-          "open-save-dialog",
-          {
-            title: "名前を付けて保存",
-            filters: [
-              {
-                name: "テキストファイル",
-                extensions: ["txt"],
-              },
-            ],
-            defaultPath: "無題.txt",
-          }
-        )
-        const { filePath, canceled } = res
-        if (canceled) return
-        try {
-          const text = editor
-            .getEditorState()
-            .read(() =>
-              $getRoot().getTextContent(true, false).replace(/\n\n/g, "\n")
-            )
-          await writeFile(filePath, text)
-          setDraftPath(filePath)
-          setIsSaved(true)
-        } catch (error) {
-          console.error(error)
-        }
+        await createAndSaveDraft(editor.getEditorState())
         return
       }
 
       if (timerId !== null) {
         clearTimeout(timerId)
       }
-      const text = editor
-        .getEditorState()
-        .read(() =>
-          $getRoot().getTextContent(true, false).replace(/\n\n/g, "\n")
-        )
-      try {
-        await writeFile(draftPath, text)
-        setIsSaved(true)
-      } catch (error) {
-        console.error(error)
-      }
+      const err = await saveDraft(draftPath, editor.getEditorState())
+      if (err) return
+      setIsSaved(true)
     })
     ipcRenderer.on("save-new-draft", async (_, payload: string) => {
       if (timerId !== null) {
         clearTimeout(timerId)
       }
-      const text = editor
-        .getEditorState()
-        .read(() =>
-          $getRoot().getTextContent(true, false).replace(/\n\n/g, "\n")
-        )
-      try {
-        await writeFile(payload, text)
-        setDraftPath(payload)
-      } catch (error) {
-        console.error(error)
-      }
+      const err = await saveDraft(payload, editor.getEditorState())
+      if (err) return
+      setDraftPath(payload)
     })
 
     return () => {
       ipcRenderer.removeAllListeners("save-draft")
       ipcRenderer.removeAllListeners("save-new-draft")
     }
-  }, [draftPath])
-
-  useEffect(() => {
-    shouldSave.current = false
   }, [draftPath])
 
   useEffect(() => {
@@ -115,20 +115,15 @@ export const AutoSavePlugin = (): null => {
         if (timerId !== null) {
           clearTimeout(timerId)
         }
-        try {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          timerId = setTimeout(() => {
-            editorState.read(async () => {
-              const text = $getRoot()
-                .getTextContent(true, false)
-                .replace(/\n\n/g, "\n")
-              if (isProd) await writeFile(draftPath, text)
-              setIsSaved(true)
-            })
-          }, 5000)
-        } catch (error) {
-          console.error(error)
-        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        timerId = setTimeout(() => {
+          ;(async () => {
+            const err = await saveDraft(draftPath, editorState)
+            if (err) return
+            setIsSaved(true)
+          })()
+        }, 5000)
       }
     )
   }, [editor, draftPath])

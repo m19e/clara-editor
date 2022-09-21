@@ -4,6 +4,7 @@ import {
   $isRangeSelection,
   PASTE_COMMAND,
   COMMAND_PRIORITY_LOW,
+  TextNode,
 } from "lexical"
 import type { RangeSelection, GridSelection } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
@@ -11,34 +12,41 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 export const ReplaceTextPlugin = () => {
   const [editor] = useLexicalComposerContext()
 
-  useEffect(() => {
-    return editor.registerCommand(
-      PASTE_COMMAND,
-      (event) => {
-        const selection = $getSelection()
-        if (!$isRangeSelection(selection)) {
-          return false
-        }
-        event.preventDefault()
-        editor.update(
-          () => {
-            const clipboardData =
-              event instanceof InputEvent || event instanceof KeyboardEvent
-                ? null
-                : event.clipboardData
+  const registerPaste = editor.registerCommand(
+    PASTE_COMMAND,
+    (event) => {
+      const selection = $getSelection()
+      if (!$isRangeSelection(selection)) {
+        return false
+      }
+      event.preventDefault()
+      editor.update(
+        () => {
+          const clipboardData =
+            event instanceof InputEvent || event instanceof KeyboardEvent
+              ? null
+              : event.clipboardData
 
-            if (clipboardData != null) {
-              $insertDataTransferForPlainText(clipboardData, selection)
-            }
-          },
-          {
-            tag: "paste",
+          if (clipboardData != null) {
+            $insertDataTransferForPlainText(clipboardData, selection)
           }
-        )
-        return true
-      },
-      COMMAND_PRIORITY_LOW
-    )
+        },
+        {
+          tag: "paste",
+        }
+      )
+      return true
+    },
+    COMMAND_PRIORITY_LOW
+  )
+
+  useEffect(() => {
+    return editor.registerNodeTransform(TextNode, (node: TextNode) => {
+      const text = node.getTextContent()
+      if (shouldReplaceText(text)) {
+        node.setTextContent(replacer(text))
+      }
+    })
   }, [editor])
 
   return null
