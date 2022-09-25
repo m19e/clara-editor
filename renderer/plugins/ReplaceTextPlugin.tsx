@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { useEffect } from "react"
 import {
   $getSelection,
@@ -52,19 +53,33 @@ export const ReplaceTextPlugin = () => {
   return null
 }
 
-// eslint-disable-next-line no-useless-escape
-const reg = new RegExp(`[\(\)]`, "u")
+const replacerPairList: {
+  target: {
+    reg: RegExp
+    text: string
+  }
+  replace: string
+}[] = [
+  { target: { reg: /\(/g, text: "(" }, replace: "（" },
+  { target: { reg: /\)/g, text: ")" }, replace: "）" },
+]
+
+const escapeRegExp = (string: string) => {
+  return ("" + string).replace(/[.*+?^=!:${}()|[\]\/\\]/g, "\\$&")
+}
+
+const reg = new RegExp(
+  String.raw`[${escapeRegExp(
+    replacerPairList.map((p) => p.target.text).join("")
+  )}]`,
+  "u"
+)
 
 const shouldReplaceText = (text: string): boolean => !!text.match(reg)
 
-const replacerPairList: { target: RegExp; replace: string }[] = [
-  { target: /\(/g, replace: "（" },
-  { target: /\)/g, replace: "）" },
-]
-
 const replacer = (initialText: string) =>
   replacerPairList.reduce(
-    (prevText, pair) => prevText.replace(pair.target, pair.replace),
+    (prevText, pair) => prevText.replace(pair.target.reg, pair.replace),
     initialText
   )
 
