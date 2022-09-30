@@ -25,6 +25,7 @@
     "next-themes": "^0.2.0",
     "next-transpile-modules": "^9.0.0",
     "react-daisyui": "^2.3.2",
+    "react-perfect-scrollbar": "^1.5.8",
     "recoil": "^0.7.5"
   },
   "devDependencies": {
