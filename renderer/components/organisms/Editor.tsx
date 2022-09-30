@@ -21,12 +21,10 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin"
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin"
 
 import { VerticalPlugin } from "@/plugins/VerticalPlugin"
-// import { ReplaceTextPlugin } from "@/plugins/ReplaceTextPlugin"
+import { ReplaceTextPlugin } from "@/plugins/ReplaceTextPlugin"
 import { AutoLoadPlugin } from "@/plugins/AutoLoadPlugin"
 import { AutoSavePlugin } from "@/plugins/AutoSavePlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
-
-import EmojisPlugin, { EmojiNode } from "@/plugins/EmojisPlugin"
 
 import { MetaHead } from "@/foundations/MetaHead"
 import { IpcListener } from "@/components/organisms/IpcListener"
@@ -41,7 +39,6 @@ const getTextCharCount = (text: string): number => {
 const initialConfig: ComponentProps<typeof LexicalComposer>["initialConfig"] = {
   namespace: "ClaraEditor",
   onError: (error) => console.error(error),
-  nodes: [EmojiNode],
 }
 
 export const Editor: FC = () => {
@@ -121,8 +118,7 @@ export const Editor: FC = () => {
       </div>
       <Footer />
 
-      <EmojisPlugin />
-      {/* <ReplaceTextPlugin /> */}
+      <ReplaceTextPlugin />
       <AutoLoadPlugin />
       <AutoSavePlugin />
       <AutoFocusPlugin defaultSelection="rootEnd" />
