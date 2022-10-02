@@ -2,6 +2,7 @@ import { useRef, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
 import type { EditorState } from "lexical"
+import "react-perfect-scrollbar/dist/css/styles.css"
 
 import {
   useIsFallback,
@@ -118,13 +119,13 @@ export const Editor: FC = () => {
       </div>
       <Footer />
 
-      <ReplaceTextPlugin />
       <AutoLoadPlugin />
       <AutoSavePlugin />
       <AutoFocusPlugin defaultSelection="rootEnd" />
       <AutoHorizontalScrollPlugin scrollRef={containerRef} />
       <HistoryPlugin />
       <VerticalPlugin />
+      <ReplaceTextPlugin />
       <OnChangePlugin
         onChange={handleEditorChange}
         ignoreInitialChange={true}
