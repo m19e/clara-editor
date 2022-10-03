@@ -2,6 +2,7 @@ import { useRef, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
 import type { EditorState } from "lexical"
+import Scrollbar from "react-perfect-scrollbar"
 import "react-perfect-scrollbar/dist/css/styles.css"
 
 import {
@@ -51,25 +52,26 @@ export const Editor: FC = () => {
   const [, setCharCount] = useCharCount()
   const [, setSelectedCharCount] = useSelectedCharCount()
 
-  const containerRef = useRef<HTMLDivElement | null>(null)
+  const editorRef = useRef<HTMLDivElement | null>(null)
+  const scrollRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.setAttribute(
+    if (editorRef.current) {
+      editorRef.current.setAttribute(
         "style",
         `
         font-size: ${fs}rem;
         line-height: ${lh};
-        height: calc(${lw}em + 0.5rem + 1em);
-        max-height: calc(100vh - 8rem - 0.5rem - 1em);
+        height: ${lw}em;
+        max-height: calc(100vh - 8rem - 1rem);
         `
       )
     }
   }, [fs, lh, lw])
 
-  const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({
+  const handleWheel = (e: WheelEvent<HTMLElement>) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
         top: 0,
         left: -(e.deltaY * 3),
         behavior: "smooth",
@@ -92,18 +94,28 @@ export const Editor: FC = () => {
     <LexicalComposer initialConfig={initialConfig}>
       <MetaHead />
       <IpcListener />
+      <AutoLoadPlugin />
+      <AutoSavePlugin />
+      <AutoFocusPlugin defaultSelection="rootEnd" />
+      <AutoHorizontalScrollPlugin scrollRef={editorRef} />
+      <HistoryPlugin />
+      <VerticalPlugin />
+      <ReplaceTextPlugin />
+      <OnChangePlugin
+        onChange={handleEditorChange}
+        ignoreInitialChange={true}
+      />
+
       {isFallback && <Fallback />}
-      <div className="h-screen w-full">
-        <div
-          id="container"
-          className="flex h-full w-full flex-col items-center justify-center"
-        >
-          <div className="flex w-3/4 justify-center">
-            <div
-              className={`scrollbar vertical relative overflow-x-auto overflow-y-hidden pb-2 ${ft}`}
-              ref={containerRef}
-              onWheel={handleWheel}
-            >
+      <div className="flex h-screen items-center justify-center">
+        <div className="w-3/4">
+          <Scrollbar
+            className="flex pb-4"
+            containerRef={(ref) => (scrollRef.current = ref)}
+            onWheel={handleWheel}
+          >
+            <div className="flex-1"></div>
+            <div className={`vertical relative ${ft}`} ref={editorRef}>
               <PlainTextPlugin
                 contentEditable={
                   <ContentEditable
@@ -114,22 +126,11 @@ export const Editor: FC = () => {
                 placeholder={<Placeholder />}
               />
             </div>
-          </div>
+            <div className="flex-1"></div>
+          </Scrollbar>
         </div>
       </div>
       <Footer />
-
-      <AutoLoadPlugin />
-      <AutoSavePlugin />
-      <AutoFocusPlugin defaultSelection="rootEnd" />
-      <AutoHorizontalScrollPlugin scrollRef={containerRef} />
-      <HistoryPlugin />
-      <VerticalPlugin />
-      <ReplaceTextPlugin />
-      <OnChangePlugin
-        onChange={handleEditorChange}
-        ignoreInitialChange={true}
-      />
     </LexicalComposer>
   )
 }
