@@ -25,6 +25,8 @@ type MainChannel =
   | "toggle-color-theme"
   | "toggle-char-count"
   | "select-all"
+  | "undo"
+  | "redo"
 
 export const registerIpcListener = (
   channel: MainChannel,

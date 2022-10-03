@@ -1,6 +1,11 @@
 import { useEffect } from "react"
 import { useTheme } from "next-themes"
-import { $getSelection, $isRangeSelection } from "lexical"
+import {
+  $getSelection,
+  $isRangeSelection,
+  UNDO_COMMAND,
+  REDO_COMMAND,
+} from "lexical"
 import { $selectAll } from "@lexical/selection"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
@@ -32,6 +37,12 @@ export const IpcListener = () => {
             $selectAll(selection)
           }
         })
+      }),
+      registerIpcListener("undo", () => {
+        editor.dispatchCommand(UNDO_COMMAND, undefined)
+      }),
+      registerIpcListener("redo", () => {
+        editor.dispatchCommand(REDO_COMMAND, undefined)
       })
     )
   }, [theme, editor])

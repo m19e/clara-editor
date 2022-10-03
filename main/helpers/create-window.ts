@@ -90,12 +90,29 @@ export const createWindow = (
   })()
 
   contextMenu({
+    prepend: (_, { isEditable }) => [
+      {
+        id: "undo",
+        label: "元に戻す",
+        visible: isEditable,
+        click: async () => {
+          await ipc(win, "undo")
+        },
+      },
+      {
+        id: "redo",
+        label: "やり直し",
+        visible: isEditable,
+        click: async () => {
+          await ipc(win, "redo")
+        },
+      },
+    ],
     labels: {
       cut: "切り取り",
       copy: "コピー",
       paste: "貼り付け",
     },
-
     append: (_, { isEditable }) => [
       {
         id: "select-all",
