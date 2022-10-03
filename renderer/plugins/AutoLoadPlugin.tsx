@@ -15,7 +15,6 @@ export const AutoLoadPlugin: FC = () => {
 
   useEffect(() => {
     const f = async () => {
-      setIsFallback(true)
       try {
         const draft = await readFile(draftPath, { encoding: "utf-8" })
         editor.update(() => $setTextContent(draft))
@@ -24,9 +23,12 @@ export const AutoLoadPlugin: FC = () => {
         console.error(e)
       }
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      setIsFallback(false)
     }
-    if (isProd && draftPath) f()
+    ;(async () => {
+      setIsFallback(true)
+      if (isProd && draftPath) await f()
+      setIsFallback(false)
+    })()
   }, [draftPath])
 
   return null
