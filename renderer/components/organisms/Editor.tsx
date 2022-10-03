@@ -97,7 +97,7 @@ export const Editor: FC = () => {
       <AutoLoadPlugin />
       <AutoSavePlugin />
       <AutoFocusPlugin defaultSelection="rootEnd" />
-      <AutoHorizontalScrollPlugin scrollRef={editorRef} />
+      <AutoHorizontalScrollPlugin scrollRef={scrollRef} />
       <HistoryPlugin />
       <VerticalPlugin />
       <ReplaceTextPlugin />
