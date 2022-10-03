@@ -1,12 +1,11 @@
 import { writeFile } from "fs/promises"
-import { ipcRenderer } from "electron"
 import type { SaveDialogOptions, SaveDialogReturnValue } from "electron"
 import { useEffect, useRef } from "react"
 import { $getRoot } from "lexical"
 import type { EditorState } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
-import { ipc } from "@/lib/electron/ipc"
+import { ipc, mergeRegister, registerIpcListener } from "@/lib/electron/ipc"
 import { useDraftPath, useIsSaved } from "@/hooks"
 
 const isProd = process.env.NODE_ENV === "production"
@@ -66,33 +65,30 @@ export const AutoSavePlugin = (): null => {
   useEffect(() => {
     shouldSave.current = false
 
-    ipcRenderer.on("save-draft", async () => {
-      if (draftPath === "") {
-        await createAndSaveDraft(editor.getEditorState())
-        return
-      }
+    return mergeRegister(
+      registerIpcListener("save-draft", async () => {
+        if (draftPath === "") {
+          await createAndSaveDraft(editor.getEditorState())
+          return
+        }
 
-      if (timerId !== null) {
-        clearTimeout(timerId)
-      }
-      const err = await saveDraft(draftPath, editor.getEditorState())
-      if (err) return
-      setIsSaved(true)
-    })
-    ipcRenderer.on("save-new-draft", async (_, payload: string) => {
-      if (timerId !== null) {
-        clearTimeout(timerId)
-      }
-      const err = await saveDraft(payload, editor.getEditorState())
-      if (err) return
-      setDraftPath(payload)
-    })
-
-    return () => {
-      ipcRenderer.removeAllListeners("save-draft")
-      ipcRenderer.removeAllListeners("save-new-draft")
-    }
-  }, [draftPath])
+        if (timerId !== null) {
+          clearTimeout(timerId)
+        }
+        const err = await saveDraft(draftPath, editor.getEditorState())
+        if (err) return
+        setIsSaved(true)
+      }),
+      registerIpcListener("save-new-draft", async (_, payload: string) => {
+        if (timerId !== null) {
+          clearTimeout(timerId)
+        }
+        const err = await saveDraft(payload, editor.getEditorState())
+        if (err) return
+        setDraftPath(payload)
+      })
+    )
+  }, [editor, draftPath, timerId, createAndSaveDraft])
 
   useEffect(() => {
     return editor.registerUpdateListener(
