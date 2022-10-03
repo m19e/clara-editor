@@ -32,6 +32,7 @@ type MainChannel =
   | "save-new-draft"
   | "toggle-color-theme"
   | "toggle-char-count"
+  | "select-all"
 
 export const ipc = <T, U>(
   mainWindow: BrowserWindow,

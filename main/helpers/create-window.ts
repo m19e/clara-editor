@@ -5,6 +5,7 @@ import type {
   MenuItem,
 } from "electron"
 import Store from "electron-store"
+import contextMenu from "electron-context-menu"
 
 import { addIpcListener, ipc } from "./ipc"
 
@@ -87,6 +88,28 @@ export const createWindow = (
     const menu = await createMenu(win)
     Menu.setApplicationMenu(menu)
   })()
+
+  contextMenu({
+    labels: {
+      cut: "切り取り",
+      copy: "コピー",
+      paste: "貼り付け",
+    },
+
+    append: (_, { isEditable }) => [
+      {
+        id: "select-all",
+        label: "すべて選択",
+        visible: isEditable,
+        click: async () => {
+          await ipc(win, "select-all")
+        },
+      },
+    ],
+    showSelectAll: false,
+    showSearchWithGoogle: false,
+    showInspectElement: false,
+  })
 
   addIpcListener(win)
 
