@@ -5,7 +5,7 @@ import { $getRoot } from "lexical"
 import type { EditorState } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
-import { ipc, mergeRegister, registerIpcListener } from "@/lib/electron/ipc"
+import { ipc, mergeRegister, registerIpcFromMain } from "@/lib/electron/ipc"
 import { useDraftPath, useIsSaved } from "@/hooks"
 
 const isProd = process.env.NODE_ENV === "production"
@@ -66,7 +66,7 @@ export const AutoSavePlugin = (): null => {
     shouldSave.current = false
 
     return mergeRegister(
-      registerIpcListener("save-draft", async () => {
+      registerIpcFromMain("save-draft", async () => {
         if (draftPath === "") {
           await createAndSaveDraft(editor.getEditorState())
           return
@@ -79,7 +79,7 @@ export const AutoSavePlugin = (): null => {
         if (err) return
         setIsSaved(true)
       }),
-      registerIpcListener("save-new-draft", async (_, payload: string) => {
+      registerIpcFromMain("save-new-draft", async (_, payload: string) => {
         if (timerId !== null) {
           clearTimeout(timerId)
         }

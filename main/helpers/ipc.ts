@@ -6,7 +6,7 @@ import type {
 } from "electron"
 import type { RendererChannel, MainChannel } from "common/types"
 
-const registerIpcListener = (
+const registerIpcFromRenderer = (
   channel: RendererChannel,
   listener: (event: IpcMainEvent, ...args: any[]) => void
 ): void => {
@@ -14,7 +14,7 @@ const registerIpcListener = (
 }
 
 export const addIpcListener = (mainWindow: BrowserWindow) => {
-  registerIpcListener(
+  registerIpcFromRenderer(
     "open-file-dialog",
     async (event, payload?: OpenDialogOptions) => {
       if (!mainWindow) {
@@ -28,7 +28,7 @@ export const addIpcListener = (mainWindow: BrowserWindow) => {
       event.reply("open-file-dialog", value)
     }
   )
-  registerIpcListener(
+  registerIpcFromRenderer(
     "open-save-dialog",
     async (event, payload?: SaveDialogOptions) => {
       if (!mainWindow) {

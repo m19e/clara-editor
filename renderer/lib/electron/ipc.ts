@@ -17,7 +17,7 @@ export const mergeRegister = (...func: Array<Func>): Func => {
   return () => func.forEach((f) => f())
 }
 
-export const registerIpcListener = (
+export const registerIpcFromMain = (
   channel: MainChannel,
   listener: (event: IpcRendererEvent, ...args: any[]) => void
 ): Func => {
