@@ -29,7 +29,7 @@ import { AutoSavePlugin } from "@/plugins/AutoSavePlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
 
 import { MetaHead } from "@/foundations/MetaHead"
-import { IpcListener } from "@/components/organisms/IpcListener"
+import { IpcListener } from "@/foundations/IpcListener"
 import { Footer } from "@/components/organisms/Footer"
 
 const getTextCharCount = (text: string): number => {
