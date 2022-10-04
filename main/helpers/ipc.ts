@@ -4,8 +4,7 @@ import type {
   OpenDialogOptions,
   SaveDialogOptions,
 } from "electron"
-
-type RendererChannel = "open-file-dialog" | "open-save-dialog"
+import type { RendererChannel, MainChannel } from "common/types"
 
 const registerIpcListener = (
   channel: RendererChannel,
@@ -44,16 +43,6 @@ export const addIpcListener = (mainWindow: BrowserWindow) => {
     }
   )
 }
-
-type MainChannel =
-  | "recieve-draft-path"
-  | "save-draft"
-  | "save-new-draft"
-  | "toggle-color-theme"
-  | "toggle-char-count"
-  | "select-all"
-  | "undo"
-  | "redo"
 
 export const ipc = <T, U>(
   mainWindow: BrowserWindow,
