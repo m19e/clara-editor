@@ -93,7 +93,7 @@ export const createWindow = (
     prepend: (_, { isEditable }) => [
       {
         id: "undo",
-        label: "元に戻す",
+        label: "元に戻す　　Ctrl+Z",
         visible: isEditable,
         click: async () => {
           await ipc(win, "undo")
@@ -101,7 +101,7 @@ export const createWindow = (
       },
       {
         id: "redo",
-        label: "やり直し",
+        label: "やり直し　　Ctrl+Y",
         visible: isEditable,
         click: async () => {
           await ipc(win, "redo")
@@ -109,14 +109,14 @@ export const createWindow = (
       },
     ],
     labels: {
-      cut: "切り取り",
-      copy: "コピー",
-      paste: "貼り付け",
+      cut: "切り取り　　Ctrl+X",
+      copy: "コピー　　　Ctrl+C",
+      paste: "貼り付け　　Ctrl+V",
     },
     append: (_, { isEditable }) => [
       {
         id: "select-all",
-        label: "すべて選択",
+        label: "すべて選択　Ctrl+A",
         visible: isEditable,
         click: async () => {
           await ipc(win, "select-all")

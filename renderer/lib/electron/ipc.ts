@@ -7,7 +7,6 @@ export const ipc = <T, U>(channel: RendererChannel, payload?: T): Promise<U> =>
     ipcRenderer.once(channel, (_event, args: U) => {
       resolve(args)
     })
-
     ipcRenderer.send(channel, payload)
   })
 
