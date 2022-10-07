@@ -2,7 +2,7 @@ import { atom, DefaultValue } from "recoil"
 import type { AtomEffect } from "recoil"
 import Store from "electron-store"
 
-import { IS_PROD } from "common/consts"
+import { IS_PROD } from "@/consts"
 import { FontType } from "@/types"
 
 const store = new Store()

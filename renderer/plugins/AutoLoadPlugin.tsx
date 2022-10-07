@@ -3,7 +3,7 @@ import type { FC } from "react"
 import { useEffect } from "react"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
-import { IS_PROD } from "common/consts"
+import { IS_PROD } from "@/consts"
 import { $setTextContent } from "@/lib/lexical"
 import { useIsFallback, useDraftPath } from "@/hooks"
 

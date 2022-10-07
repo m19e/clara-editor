@@ -5,7 +5,7 @@ import { $getRoot } from "lexical"
 import type { EditorState } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
-import { IS_PROD } from "common/consts"
+import { IS_PROD } from "@/consts"
 import { ipc, mergeRegister, registerIpcFromMain } from "@/lib/electron/ipc"
 import { useDraftPath, useIsSaved } from "@/hooks"
 
