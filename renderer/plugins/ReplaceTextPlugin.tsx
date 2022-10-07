@@ -4,9 +4,11 @@ import {
   $getSelection,
   $isRangeSelection,
   PASTE_COMMAND,
+  INSERT_LINE_BREAK_COMMAND,
   COMMAND_PRIORITY_LOW,
   TextNode,
 } from "lexical"
+import { mergeRegister } from "@lexical/utils"
 import type { RangeSelection, GridSelection } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
@@ -42,12 +44,27 @@ export const ReplaceTextPlugin = () => {
   )
 
   useEffect(() => {
-    return editor.registerNodeTransform(TextNode, (node: TextNode) => {
-      const text = node.getTextContent()
-      if (shouldReplaceText(text)) {
-        node.setTextContent(replacer(text))
-      }
-    })
+    return mergeRegister(
+      editor.registerNodeTransform(TextNode, (node: TextNode) => {
+        const text = node.getTextContent()
+        if (shouldReplaceText(text)) {
+          node.setTextContent(replacer(text))
+        }
+      }),
+      editor.registerCommand(
+        INSERT_LINE_BREAK_COMMAND,
+        (selectStart) => {
+          const selection = $getSelection()
+          if (!$isRangeSelection(selection)) {
+            return false
+          }
+          selection.insertLineBreak(selectStart)
+          selection.insertRawText("　")
+          return true
+        },
+        COMMAND_PRIORITY_LOW
+      )
+    )
   }, [editor])
 
   return null
