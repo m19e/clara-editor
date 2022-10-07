@@ -5,10 +5,9 @@ import { $getRoot } from "lexical"
 import type { EditorState } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
+import { IS_PROD } from "common/consts"
 import { ipc, mergeRegister, registerIpcFromMain } from "@/lib/electron/ipc"
 import { useDraftPath, useIsSaved } from "@/hooks"
-
-const isProd = process.env.NODE_ENV === "production"
 
 const getTextFromEditorState = (editorState: EditorState) => {
   return editorState.read(() => $getRoot().getTextContent(true, false))
@@ -18,7 +17,7 @@ const saveDraft = async (
   filepath: string,
   editorState: EditorState
 ): Promise<null | string> => {
-  if (!isProd) return
+  if (!IS_PROD) return
 
   const text = getTextFromEditorState(editorState)
   try {

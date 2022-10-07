@@ -2,9 +2,8 @@ import { atom, DefaultValue } from "recoil"
 import type { AtomEffect } from "recoil"
 import Store from "electron-store"
 
+import { IS_PROD } from "common/consts"
 import { FontType } from "@/types"
-
-const isProd = process.env.NODE_ENV === "production"
 
 const store = new Store()
 
@@ -14,7 +13,7 @@ const appStoreEffect: ElectronStoreEffect =
   (key: string) =>
   ({ setSelf, onSet }) => {
     const value = store.get(key, new DefaultValue()) as any
-    if (isProd) setSelf(value)
+    if (IS_PROD) setSelf(value)
 
     onSet((newValue, _, isReset) => {
       isReset ? store.delete(key) : store.set(key, newValue)
