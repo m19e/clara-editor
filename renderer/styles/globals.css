@@ -131,6 +131,10 @@
   text-combine-upright: all;
 }
 
+html[data-theme="light"] .text-base-content {
+  font-weight: 600;
+}
+
 html[data-theme="light"] .text-base-content ::selection {
   color: #f9f9fa;
   background-color: #5f626a;
