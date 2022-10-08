@@ -110,12 +110,19 @@ export const Editor: FC = () => {
       <div className="flex h-screen items-center justify-center">
         <div className="w-3/4">
           <Scrollbar
-            className="flex pb-4"
+            className="flex py-4"
             containerRef={(ref) => (scrollRef.current = ref)}
             onWheel={handleWheel}
           >
             <div className="flex-1"></div>
             <div className={`vertical relative ${ft}`} ref={editorRef}>
+              <div className="absolute -top-4 right-0 flex w-full flex-col">
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <span key={i} className="text-combined">
+                    {i}
+                  </span>
+                ))}
+              </div>
               <PlainTextPlugin
                 contentEditable={
                   <ContentEditable
