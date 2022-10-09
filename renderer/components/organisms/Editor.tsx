@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react"
+import { useRef, useState, useEffect } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
 import type { EditorState } from "lexical"
@@ -55,6 +55,16 @@ export const Editor: FC = () => {
   const editorRef = useRef<HTMLDivElement | null>(null)
   const scrollRef = useRef<HTMLElement | null>(null)
 
+  const [lineNumCount, setLineNumCount] = useState(3)
+
+  const updateLineNumCount = () => {
+    if (!editorRef.current) return
+    const rect = editorRef.current.getBoundingClientRect()
+    const lineWidth = 16 * fs * lh
+    const count = Math.trunc(rect.width / lineWidth)
+    setLineNumCount(count + 3)
+  }
+
   useEffect(() => {
     if (editorRef.current) {
       editorRef.current.setAttribute(
@@ -63,10 +73,11 @@ export const Editor: FC = () => {
         font-size: ${fs}rem;
         line-height: ${lh};
         height: ${lw}em;
-        max-height: calc(100vh - 8rem - 1rem);
+        max-height: calc(100vh - 8rem - 1rem - 2em);
         `
       )
     }
+    updateLineNumCount()
   }, [fs, lh, lw])
 
   const handleWheel = (e: WheelEvent<HTMLElement>) => {
@@ -88,6 +99,7 @@ export const Editor: FC = () => {
         setSelectedCharCount(0)
       }
     })
+    updateLineNumCount()
   }
 
   return (
@@ -110,18 +122,36 @@ export const Editor: FC = () => {
       <div className="flex h-screen items-center justify-center">
         <div className="w-3/4">
           <Scrollbar
-            className="flex py-4"
+            className="flex pb-4"
             containerRef={(ref) => (scrollRef.current = ref)}
             onWheel={handleWheel}
+            style={{ paddingTop: `${fs * 2}rem` }}
           >
             <div className="flex-1"></div>
             <div className={`vertical relative ${ft}`} ref={editorRef}>
-              <div className="absolute -top-4 right-0 flex w-full flex-col">
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <span key={i} className="text-combined">
-                    {i}
-                  </span>
-                ))}
+              <div className="absolute -top-[2em] right-0 flex w-full flex-col overflow-hidden">
+                {Array.from({ length: lineNumCount }).map((_, i) => {
+                  const num = i + 1
+                  const isBullet = !(num === 1 || num % 5 === 0)
+
+                  if (isBullet) {
+                    return <span key={i}>・</span>
+                  }
+                  return (
+                    <div key={i} className="relative">
+                      <span className="opacity-0">・</span>
+                      <span
+                        className="absolute -top-[0.5em] w-full text-center"
+                        style={{
+                          writingMode: "horizontal-tb",
+                          fontSize: `${fs}rem`,
+                        }}
+                      >
+                        {num}
+                      </span>
+                    </div>
+                  )
+                })}
               </div>
               <PlainTextPlugin
                 contentEditable={
