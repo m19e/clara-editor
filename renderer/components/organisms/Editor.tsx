@@ -61,8 +61,8 @@ export const Editor: FC = () => {
     if (!editorRef.current) return
     const rect = editorRef.current.getBoundingClientRect()
     const lineWidth = 16 * fs * lh
-    const count = Math.trunc(rect.width / lineWidth)
-    setLineNumCount(count + 3)
+    const count = Math.round(rect.width / lineWidth)
+    setLineNumCount(count || 1)
   }
 
   useEffect(() => {
