@@ -73,7 +73,7 @@ export const Editor: FC = () => {
         font-size: ${fs}rem;
         line-height: ${lh};
         height: ${lw}em;
-        max-height: calc(100vh - 8rem - 1rem - 2em);
+        max-height: calc(100vh - 8rem - 1rem - 2em - ${fs}rem * ${lh});
         `
       )
     }
@@ -125,43 +125,61 @@ export const Editor: FC = () => {
             className="flex pb-4"
             containerRef={(ref) => (scrollRef.current = ref)}
             onWheel={handleWheel}
-            style={{ paddingTop: `${fs * 2}rem` }}
           >
             <div className="flex-1"></div>
-            <div className={`vertical relative ${ft}`} ref={editorRef}>
-              <div className="absolute -top-[2em] right-0 flex w-full flex-col overflow-hidden">
+
+            <div className="flex h-full flex-col">
+              <div
+                className={`flex w-full flex-row-reverse items-start opacity-50 ${ft}`}
+                style={{
+                  fontSize: `${fs}rem`,
+                  lineHeight: lh,
+                }}
+              >
                 {Array.from({ length: lineNumCount }).map((_, i) => {
                   const num = i + 1
                   const isBullet = !(num === 1 || num % 5 === 0)
+                  const label = isBullet ? "・" : num
 
-                  if (isBullet) {
-                    return <span key={i}>・</span>
-                  }
                   return (
-                    <div key={i} className="relative">
-                      <span className="opacity-0">・</span>
-                      <span
-                        className="absolute -top-[0.5em] w-full text-center"
-                        style={{
-                          writingMode: "horizontal-tb",
-                          fontSize: `${fs}rem`,
-                        }}
-                      >
-                        {num}
-                      </span>
-                    </div>
+                    <span key={i} className="w-full text-center">
+                      {label}
+                    </span>
                   )
                 })}
               </div>
-              <PlainTextPlugin
-                contentEditable={
-                  <ContentEditable
-                    className="text-base-content text-upright break-all text-justify focus:outline-none"
-                    spellCheck={false}
-                  />
-                }
-                placeholder={<Placeholder />}
-              />
+              <div
+                className={`vertical relative my-[1em] ${ft}`}
+                ref={editorRef}
+              >
+                {/* <div
+                  className="absolute -top-[3.5em] right-0 w-full"
+                  style={{ writingMode: "horizontal-tb" }}
+                >
+                  <div className="flex w-full flex-row-reverse">
+                    {Array.from({ length: lineNumCount }).map((_, i) => {
+                      const num = i + 1
+                      const isBullet = !(num === 1 || num % 5 === 0)
+                      const label = isBullet ? "・" : num
+
+                      return (
+                        <span key={i} className="w-full text-center">
+                          {label}
+                        </span>
+                      )
+                    })}
+                  </div>
+                </div> */}
+                <PlainTextPlugin
+                  contentEditable={
+                    <ContentEditable
+                      className="text-base-content text-upright break-all text-justify focus:outline-none"
+                      spellCheck={false}
+                    />
+                  }
+                  placeholder={<Placeholder />}
+                />
+              </div>
             </div>
             <div className="flex-1"></div>
           </Scrollbar>
