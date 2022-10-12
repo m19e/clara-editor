@@ -10,12 +10,17 @@ import { $selectAll } from "@lexical/selection"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
 import { mergeRegister, registerIpcFromMain } from "@/lib/electron/ipc"
-import { useDisplayCharCount, useDraftPath } from "@/hooks"
+import {
+  useDisplayCharCount,
+  useDisplayLineNumber,
+  useDraftPath,
+} from "@/hooks"
 
 export const IpcListener = () => {
   const { theme, setTheme } = useTheme()
   const [, setDraftPath] = useDraftPath()
   const [, setDisplayCharCount] = useDisplayCharCount()
+  const [, setDisplayLineNumber] = useDisplayLineNumber()
 
   const [editor] = useLexicalComposerContext()
 
@@ -29,6 +34,9 @@ export const IpcListener = () => {
       }),
       registerIpcFromMain("toggle-char-count", () => {
         setDisplayCharCount((prev) => !prev)
+      }),
+      registerIpcFromMain("toggle-line-number", () => {
+        setDisplayLineNumber((prev) => !prev)
       }),
       registerIpcFromMain("select-all", () => {
         editor.update(() => {

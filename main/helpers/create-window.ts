@@ -223,6 +223,15 @@ const createMenu = async (win: BrowserWindow) => {
           },
         },
         {
+          id: "line-number",
+          label: "行番号",
+          type: "checkbox",
+          checked: true,
+          click: (_, win) => {
+            ipc(win, "toggle-line-number")
+          },
+        },
+        {
           type: "separator",
         },
         {

@@ -6,6 +6,7 @@ export type MainChannel =
   | "save-new-draft"
   | "toggle-color-theme"
   | "toggle-char-count"
+  | "toggle-line-number"
   | "select-all"
   | "undo"
   | "redo"
