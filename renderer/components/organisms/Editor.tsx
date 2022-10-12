@@ -160,9 +160,7 @@ const LineNumber: FC<{ count: number }> = ({ count }) => {
       Array.from({ length: count }).map((_, i) => {
         const num = i + 1
         const isBullet = !(num === 1 || num % 5 === 0)
-        const label = isBullet ? "・" : String(num)
-
-        return label
+        return isBullet ? "・" : String(num)
       }),
     [count]
   )
