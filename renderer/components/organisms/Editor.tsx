@@ -13,6 +13,7 @@ import {
   useLineWords,
   useCharCount,
   useSelectedCharCount,
+  useDisplayLineNumber,
 } from "@/hooks"
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
@@ -155,6 +156,8 @@ export const Editor: FC = () => {
 }
 
 const LineNumber: FC<{ count: number }> = ({ count }) => {
+  const [display] = useDisplayLineNumber()
+  const opacity = display ? "opacity-50" : "opacity-0"
   const labels = useMemo(
     () =>
       Array.from({ length: count }).map((_, i) => {
@@ -166,7 +169,7 @@ const LineNumber: FC<{ count: number }> = ({ count }) => {
   )
 
   return (
-    <div className="flex w-full flex-row-reverse opacity-50">
+    <div className={`flex w-full flex-row-reverse ${opacity}`}>
       {labels.map((label, i) => (
         <span key={i} className="w-full text-center">
           {label}
