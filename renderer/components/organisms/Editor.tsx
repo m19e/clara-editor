@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useMemo } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
 import type { EditorState } from "lexical"
@@ -55,14 +55,14 @@ export const Editor: FC = () => {
   const editorRef = useRef<HTMLDivElement | null>(null)
   const scrollRef = useRef<HTMLElement | null>(null)
 
-  const [lineNumCount, setLineNumCount] = useState(3)
+  const [lineCount, setLineCount] = useState(1)
 
   const updateLineNumCount = () => {
     if (!editorRef.current) return
     const rect = editorRef.current.getBoundingClientRect()
     const lineWidth = 16 * fs * lh
     const count = Math.round(rect.width / lineWidth)
-    setLineNumCount(count || 1)
+    setLineCount(count || 1)
   }
 
   useEffect(() => {
@@ -70,8 +70,6 @@ export const Editor: FC = () => {
       editorRef.current.setAttribute(
         "style",
         `
-        font-size: ${fs}rem;
-        line-height: ${lh};
         height: ${lw}em;
         max-height: calc(100vh - 8rem - 1rem - 2em - ${fs}rem * ${lh});
         `
@@ -127,49 +125,15 @@ export const Editor: FC = () => {
             onWheel={handleWheel}
           >
             <div className="flex-1"></div>
-
-            <div className="flex h-full flex-col">
-              <div
-                className={`flex w-full flex-row-reverse items-start opacity-50 ${ft}`}
-                style={{
-                  fontSize: `${fs}rem`,
-                  lineHeight: lh,
-                }}
-              >
-                {Array.from({ length: lineNumCount }).map((_, i) => {
-                  const num = i + 1
-                  const isBullet = !(num === 1 || num % 5 === 0)
-                  const label = isBullet ? "・" : num
-
-                  return (
-                    <span key={i} className="w-full text-center">
-                      {label}
-                    </span>
-                  )
-                })}
-              </div>
-              <div
-                className={`vertical relative my-[1em] ${ft}`}
-                ref={editorRef}
-              >
-                {/* <div
-                  className="absolute -top-[3.5em] right-0 w-full"
-                  style={{ writingMode: "horizontal-tb" }}
-                >
-                  <div className="flex w-full flex-row-reverse">
-                    {Array.from({ length: lineNumCount }).map((_, i) => {
-                      const num = i + 1
-                      const isBullet = !(num === 1 || num % 5 === 0)
-                      const label = isBullet ? "・" : num
-
-                      return (
-                        <span key={i} className="w-full text-center">
-                          {label}
-                        </span>
-                      )
-                    })}
-                  </div>
-                </div> */}
+            <div
+              className={`flex h-full flex-col ${ft}`}
+              style={{
+                fontSize: `${fs}rem`,
+                lineHeight: lh,
+              }}
+            >
+              <LineNumber count={lineCount} />
+              <div className="vertical relative my-[1em]" ref={editorRef}>
                 <PlainTextPlugin
                   contentEditable={
                     <ContentEditable
@@ -187,6 +151,30 @@ export const Editor: FC = () => {
       </div>
       <Footer />
     </LexicalComposer>
+  )
+}
+
+const LineNumber: FC<{ count: number }> = ({ count }) => {
+  const labels = useMemo(
+    () =>
+      Array.from({ length: count }).map((_, i) => {
+        const num = i + 1
+        const isBullet = !(num === 1 || num % 5 === 0)
+        const label = isBullet ? "・" : String(num)
+
+        return label
+      }),
+    [count]
+  )
+
+  return (
+    <div className="flex w-full flex-row-reverse opacity-50">
+      {labels.map((label, i) => (
+        <span key={i} className="w-full text-center">
+          {label}
+        </span>
+      ))}
+    </div>
   )
 }
 
