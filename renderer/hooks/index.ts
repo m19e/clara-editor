@@ -9,8 +9,9 @@ import {
   lineWordsState,
   charCountState,
   selectedCharCountState,
-  displayCharCountState,
   isSavedState,
+  displayCharCountState,
+  displayLineNumberState,
 } from "@/store"
 
 type ReturnType = [number, { increment: () => void; decrement: () => void }]
@@ -24,6 +25,7 @@ export const useFontType = () => useRecoilState(fontTypeState)
 export const useCharCount = () => useRecoilState(charCountState)
 export const useSelectedCharCount = () => useRecoilState(selectedCharCountState)
 export const useDisplayCharCount = () => useRecoilState(displayCharCountState)
+export const useDisplayLineNumber = () => useRecoilState(displayLineNumberState)
 
 export const useIsSaved = () => useRecoilState(isSavedState)
 
