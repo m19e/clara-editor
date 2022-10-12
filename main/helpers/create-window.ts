@@ -206,10 +206,8 @@ const createMenu = async (win: BrowserWindow) => {
           accelerator: "CmdOrCtrl+Shift+D",
           type: "checkbox",
           checked: theme === "dark",
-          click: async (_, win) => {
-            if (win) {
-              await ipc(win, "toggle-color-theme")
-            }
+          click: (_, win) => {
+            ipc(win, "toggle-color-theme")
           },
         },
         {
@@ -217,8 +215,8 @@ const createMenu = async (win: BrowserWindow) => {
           label: "字数カウント",
           type: "checkbox",
           checked: true,
-          click: async (_, win) => {
-            await ipc(win, "toggle-char-count")
+          click: (_, win) => {
+            ipc(win, "toggle-char-count")
           },
         },
         {
