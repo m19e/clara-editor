@@ -131,7 +131,7 @@
   text-combine-upright: all;
 }
 
-html[data-theme="light"] .vertical.mincho {
+html[data-theme="light"] > .mincho > .vertical {
   font-weight: 600;
 }
 
