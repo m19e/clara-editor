@@ -58,11 +58,9 @@ export const Editor: FC = () => {
 
   const [lineCount, setLineCount] = useState(1)
 
-  const updateLineNumCount = () => {
-    if (!editorRef.current) return
-    const rect = editorRef.current.getBoundingClientRect()
+  const updateLineNumCount = (editorWidth: number) => {
     const lineWidth = 16 * fs * lh
-    const count = Math.round(rect.width / lineWidth)
+    const count = Math.round(editorWidth / lineWidth)
     setLineCount(count || 1)
   }
 
@@ -76,8 +74,21 @@ export const Editor: FC = () => {
         `
       )
     }
-    updateLineNumCount()
   }, [fs, lh, lw])
+
+  useEffect(() => {
+    const resizeObs = new ResizeObserver(
+      (entries: ReadonlyArray<ResizeObserverEntry>) => {
+        const { width } = entries[0].contentRect
+        updateLineNumCount(width)
+      }
+    )
+    editorRef.current && resizeObs.observe(editorRef.current)
+
+    return () => {
+      resizeObs.disconnect()
+    }
+  }, [editorRef])
 
   const handleWheel = (e: WheelEvent<HTMLElement>) => {
     if (scrollRef.current) {
@@ -98,7 +109,6 @@ export const Editor: FC = () => {
         setSelectedCharCount(0)
       }
     })
-    updateLineNumCount()
   }
 
   return (
@@ -169,7 +179,9 @@ const LineNumber: FC<{ count: number }> = ({ count }) => {
   )
 
   return (
-    <div className={`flex w-full flex-row-reverse ${opacity}`}>
+    <div
+      className={`flex w-full flex-row-reverse transition-opacity ${opacity}`}
+    >
       {labels.map((label, i) => (
         <span key={i} className="w-full text-center">
           {label}
