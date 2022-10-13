@@ -28,28 +28,28 @@ export const AutoHorizontalScrollPlugin = ({
         return
       }
 
-      const anchorElement = editor.getElementByKey(selection.anchor.key)
+      const focusElement = editor.getElementByKey(selection.focus.key)
 
-      if (anchorElement === null) {
+      if (focusElement === null) {
         return
       }
 
       const scrollRect = scrollElement.getBoundingClientRect()
 
-      let anchorNode = editorState.read(() => selection.anchor.getNode())
-      if (anchorNode === null) {
+      let focusNode = editorState.read(() => selection.focus.getNode())
+      if (focusNode === null) {
         return
       }
-      if ($isElementNode(anchorNode)) {
+      if ($isElementNode(focusNode)) {
         const descendantNode = editorState.read(() =>
-          anchorNode?.getDescendantByIndex(selection.anchor.offset - 1)
+          focusNode?.getDescendantByIndex(selection.focus.offset - 1)
         )
         if (descendantNode !== null) {
-          anchorNode = descendantNode
+          focusNode = descendantNode
         }
       }
 
-      const element = editor.getElementByKey(anchorNode.__key) as Element
+      const element = editor.getElementByKey(focusNode.__key) as Element
 
       if (element !== null) {
         const rect = element.getBoundingClientRect()

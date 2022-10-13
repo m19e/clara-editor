@@ -104,6 +104,10 @@
     writing-mode: vertical-rl;
   }
 
+  .text-upright {
+    text-orientation: upright;
+  }
+
   .scrollbar::-webkit-scrollbar {
     height: 0.4em;
   }
@@ -121,6 +125,14 @@
   .nested-group:hover .ng-hover\:opacity-100 {
     @apply opacity-100;
   }
+}
+
+.text-combined {
+  text-combine-upright: all;
+}
+
+html[data-theme="light"] .vertical.mincho {
+  font-weight: 600;
 }
 
 html[data-theme="light"] .text-base-content ::selection {

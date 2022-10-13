@@ -1,7 +1,9 @@
-import { useRef, useEffect } from "react"
+import { useRef, useState, useEffect, useMemo } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
 import type { EditorState } from "lexical"
+import Scrollbar from "react-perfect-scrollbar"
+import "react-perfect-scrollbar/dist/css/styles.css"
 
 import {
   useIsFallback,
@@ -11,6 +13,7 @@ import {
   useLineWords,
   useCharCount,
   useSelectedCharCount,
+  useDisplayLineNumber,
 } from "@/hooks"
 
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
@@ -27,7 +30,7 @@ import { AutoSavePlugin } from "@/plugins/AutoSavePlugin"
 import { AutoHorizontalScrollPlugin } from "@/plugins/AutoHorizontalScrollPlugin"
 
 import { MetaHead } from "@/foundations/MetaHead"
-import { IpcListener } from "@/components/organisms/IpcListener"
+import { IpcListener } from "@/foundations/IpcListener"
 import { Footer } from "@/components/organisms/Footer"
 
 const getTextCharCount = (text: string): number => {
@@ -50,25 +53,35 @@ export const Editor: FC = () => {
   const [, setCharCount] = useCharCount()
   const [, setSelectedCharCount] = useSelectedCharCount()
 
-  const containerRef = useRef<HTMLDivElement | null>(null)
+  const editorRef = useRef<HTMLDivElement | null>(null)
+  const scrollRef = useRef<HTMLElement | null>(null)
+
+  const [lineCount, setLineCount] = useState(1)
+
+  const updateLineNumCount = () => {
+    if (!editorRef.current) return
+    const rect = editorRef.current.getBoundingClientRect()
+    const lineWidth = 16 * fs * lh
+    const count = Math.round(rect.width / lineWidth)
+    setLineCount(count || 1)
+  }
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.setAttribute(
+    if (editorRef.current) {
+      editorRef.current.setAttribute(
         "style",
         `
-        font-size: ${fs}rem;
-        line-height: ${lh};
-        height: calc(${lw}em + 0.5rem + 1em);
-        max-height: calc(100vh - 8rem - 0.5rem - 1em);
+        height: ${lw}em;
+        max-height: calc(100vh - 8rem - 1rem - 2em - ${fs}rem * ${lh});
         `
       )
     }
+    updateLineNumCount()
   }, [fs, lh, lw])
 
-  const handleWheel = (e: WheelEvent<HTMLDivElement>) => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({
+  const handleWheel = (e: WheelEvent<HTMLElement>) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
         top: 0,
         left: -(e.deltaY * 3),
         behavior: "smooth",
@@ -85,51 +98,84 @@ export const Editor: FC = () => {
         setSelectedCharCount(0)
       }
     })
+    updateLineNumCount()
   }
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <MetaHead />
       <IpcListener />
-      {isFallback && <Fallback />}
-      <div className="h-screen w-full">
-        <div
-          id="container"
-          className="flex h-full w-full flex-col items-center justify-center"
-        >
-          <div className="flex w-3/4 justify-center">
-            <div
-              className={`scrollbar vertical relative overflow-x-auto overflow-y-hidden pb-2 ${ft}`}
-              ref={containerRef}
-              onWheel={handleWheel}
-            >
-              <PlainTextPlugin
-                contentEditable={
-                  <ContentEditable
-                    className="text-base-content break-all text-justify focus:outline-none"
-                    spellCheck={false}
-                  />
-                }
-                placeholder={<Placeholder />}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <Footer />
-
-      <ReplaceTextPlugin />
       <AutoLoadPlugin />
       <AutoSavePlugin />
       <AutoFocusPlugin defaultSelection="rootEnd" />
-      <AutoHorizontalScrollPlugin scrollRef={containerRef} />
+      <AutoHorizontalScrollPlugin scrollRef={scrollRef} />
       <HistoryPlugin />
       <VerticalPlugin />
+      <ReplaceTextPlugin />
       <OnChangePlugin
         onChange={handleEditorChange}
         ignoreInitialChange={true}
       />
+
+      {isFallback && <Fallback />}
+      <div className="flex h-screen items-center justify-center">
+        <div className="w-3/4">
+          <Scrollbar
+            className="flex pb-4"
+            containerRef={(ref) => (scrollRef.current = ref)}
+            onWheel={handleWheel}
+          >
+            <div className="flex-1"></div>
+            <div
+              className={`flex h-full flex-col ${ft}`}
+              style={{
+                fontSize: `${fs}rem`,
+                lineHeight: lh,
+              }}
+            >
+              <LineNumber count={lineCount} />
+              <div className="vertical relative my-[1em]" ref={editorRef}>
+                <PlainTextPlugin
+                  contentEditable={
+                    <ContentEditable
+                      className="text-base-content text-upright break-all text-justify focus:outline-none"
+                      spellCheck={false}
+                    />
+                  }
+                  placeholder={<Placeholder />}
+                />
+              </div>
+            </div>
+            <div className="flex-1"></div>
+          </Scrollbar>
+        </div>
+      </div>
+      <Footer />
     </LexicalComposer>
+  )
+}
+
+const LineNumber: FC<{ count: number }> = ({ count }) => {
+  const [display] = useDisplayLineNumber()
+  const opacity = display ? "opacity-50" : "opacity-0"
+  const labels = useMemo(
+    () =>
+      Array.from({ length: count }).map((_, i) => {
+        const num = i + 1
+        const isBullet = !(num === 1 || num % 5 === 0)
+        return isBullet ? "・" : String(num)
+      }),
+    [count]
+  )
+
+  return (
+    <div className={`flex w-full flex-row-reverse ${opacity}`}>
+      {labels.map((label, i) => (
+        <span key={i} className="w-full text-center">
+          {label}
+        </span>
+      ))}
+    </div>
   )
 }
 

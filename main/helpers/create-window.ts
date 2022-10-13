@@ -5,6 +5,7 @@ import type {
   MenuItem,
 } from "electron"
 import Store from "electron-store"
+import contextMenu from "electron-context-menu"
 
 import { addIpcListener, ipc } from "./ipc"
 
@@ -88,6 +89,45 @@ export const createWindow = (
     Menu.setApplicationMenu(menu)
   })()
 
+  contextMenu({
+    prepend: (_, { isEditable }) => [
+      {
+        id: "undo",
+        label: "元に戻す　　Ctrl+Z",
+        visible: isEditable,
+        click: async () => {
+          await ipc(win, "undo")
+        },
+      },
+      {
+        id: "redo",
+        label: "やり直し　　Ctrl+Y",
+        visible: isEditable,
+        click: async () => {
+          await ipc(win, "redo")
+        },
+      },
+    ],
+    labels: {
+      cut: "切り取り　　Ctrl+X",
+      copy: "コピー　　　Ctrl+C",
+      paste: "貼り付け　　Ctrl+V",
+    },
+    append: (_, { isEditable }) => [
+      {
+        id: "select-all",
+        label: "すべて選択　Ctrl+A",
+        visible: isEditable,
+        click: async () => {
+          await ipc(win, "select-all")
+        },
+      },
+    ],
+    showSelectAll: false,
+    showSearchWithGoogle: false,
+    showInspectElement: false,
+  })
+
   addIpcListener(win)
 
   win.on("close", saveState)
@@ -166,20 +206,26 @@ const createMenu = async (win: BrowserWindow) => {
           accelerator: "CmdOrCtrl+Shift+D",
           type: "checkbox",
           checked: theme === "dark",
-          click: async (_, win) => {
-            if (win) {
-              await ipc(win, "toggle-color-theme")
-            }
+          click: (_, win) => {
+            ipc(win, "toggle-color-theme")
           },
         },
         {
           id: "char-count",
           label: "字数カウント",
-          accelerator: "CmdOrCtrl+Shift+L",
           type: "checkbox",
           checked: true,
-          click: async (_, win) => {
-            await ipc(win, "toggle-char-count")
+          click: (_, win) => {
+            ipc(win, "toggle-char-count")
+          },
+        },
+        {
+          id: "line-number",
+          label: "行番号",
+          type: "checkbox",
+          checked: true,
+          click: (_, win) => {
+            ipc(win, "toggle-line-number")
           },
         },
         {

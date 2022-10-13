@@ -1,15 +1,13 @@
 import { writeFile } from "fs/promises"
-import { ipcRenderer } from "electron"
 import type { SaveDialogOptions, SaveDialogReturnValue } from "electron"
 import { useEffect, useRef } from "react"
 import { $getRoot } from "lexical"
 import type { EditorState } from "lexical"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
-import { ipc } from "@/lib/electron/ipc"
+import { IS_PROD } from "@/consts"
+import { ipc, mergeRegister, registerIpcFromMain } from "@/lib/electron/ipc"
 import { useDraftPath, useIsSaved } from "@/hooks"
-
-const isProd = process.env.NODE_ENV === "production"
 
 const getTextFromEditorState = (editorState: EditorState) => {
   return editorState.read(() => $getRoot().getTextContent(true, false))
@@ -19,7 +17,7 @@ const saveDraft = async (
   filepath: string,
   editorState: EditorState
 ): Promise<null | string> => {
-  if (!isProd) return
+  if (!IS_PROD) return
 
   const text = getTextFromEditorState(editorState)
   try {
@@ -66,33 +64,30 @@ export const AutoSavePlugin = (): null => {
   useEffect(() => {
     shouldSave.current = false
 
-    ipcRenderer.on("save-draft", async () => {
-      if (draftPath === "") {
-        await createAndSaveDraft(editor.getEditorState())
-        return
-      }
+    return mergeRegister(
+      registerIpcFromMain("save-draft", async () => {
+        if (draftPath === "") {
+          await createAndSaveDraft(editor.getEditorState())
+          return
+        }
 
-      if (timerId !== null) {
-        clearTimeout(timerId)
-      }
-      const err = await saveDraft(draftPath, editor.getEditorState())
-      if (err) return
-      setIsSaved(true)
-    })
-    ipcRenderer.on("save-new-draft", async (_, payload: string) => {
-      if (timerId !== null) {
-        clearTimeout(timerId)
-      }
-      const err = await saveDraft(payload, editor.getEditorState())
-      if (err) return
-      setDraftPath(payload)
-    })
-
-    return () => {
-      ipcRenderer.removeAllListeners("save-draft")
-      ipcRenderer.removeAllListeners("save-new-draft")
-    }
-  }, [draftPath])
+        if (timerId !== null) {
+          clearTimeout(timerId)
+        }
+        const err = await saveDraft(draftPath, editor.getEditorState())
+        if (err) return
+        setIsSaved(true)
+      }),
+      registerIpcFromMain("save-new-draft", async (_, payload: string) => {
+        if (timerId !== null) {
+          clearTimeout(timerId)
+        }
+        const err = await saveDraft(payload, editor.getEditorState())
+        if (err) return
+        setDraftPath(payload)
+      })
+    )
+  }, [editor, draftPath, timerId, createAndSaveDraft])
 
   useEffect(() => {
     return editor.registerUpdateListener(

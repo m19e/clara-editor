@@ -2,9 +2,9 @@ import { app } from "electron"
 import serve from "electron-serve"
 import { createWindow } from "./helpers"
 
-const isProd: boolean = process.env.NODE_ENV === "production"
+const IS_PROD: boolean = process.env.NODE_ENV === "production"
 
-if (isProd) {
+if (IS_PROD) {
   serve({ directory: "app" })
 } else {
   app.setPath("userData", `${app.getPath("userData")} (development)`)
@@ -20,7 +20,7 @@ if (isProd) {
     minHeight: 480,
   })
 
-  if (isProd) {
+  if (IS_PROD) {
     await mainWindow.loadURL("app://./home.html")
   } else {
     const port = process.argv[2]

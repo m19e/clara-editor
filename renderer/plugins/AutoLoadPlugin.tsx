@@ -3,10 +3,9 @@ import type { FC } from "react"
 import { useEffect } from "react"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
+import { IS_PROD } from "@/consts"
 import { $setTextContent } from "@/lib/lexical"
 import { useIsFallback, useDraftPath } from "@/hooks"
-
-const isProd = process.env.NODE_ENV === "production"
 
 export const AutoLoadPlugin: FC = () => {
   const [editor] = useLexicalComposerContext()
@@ -15,7 +14,6 @@ export const AutoLoadPlugin: FC = () => {
 
   useEffect(() => {
     const f = async () => {
-      setIsFallback(true)
       try {
         const draft = await readFile(draftPath, { encoding: "utf-8" })
         editor.update(() => $setTextContent(draft))
@@ -24,9 +22,12 @@ export const AutoLoadPlugin: FC = () => {
         console.error(e)
       }
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      setIsFallback(false)
     }
-    if (isProd && draftPath) f()
+    ;(async () => {
+      setIsFallback(true)
+      if (IS_PROD && draftPath) await f()
+      setIsFallback(false)
+    })()
   }, [draftPath])
 
   return null

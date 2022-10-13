@@ -2,9 +2,8 @@ import { atom, DefaultValue } from "recoil"
 import type { AtomEffect } from "recoil"
 import Store from "electron-store"
 
+import { IS_PROD } from "@/consts"
 import { FontType } from "@/types"
-
-const isProd = process.env.NODE_ENV === "production"
 
 const store = new Store()
 
@@ -14,7 +13,7 @@ const appStoreEffect: ElectronStoreEffect =
   (key: string) =>
   ({ setSelf, onSet }) => {
     const value = store.get(key, new DefaultValue()) as any
-    if (isProd) setSelf(value)
+    if (IS_PROD) setSelf(value)
 
     onSet((newValue, _, isReset) => {
       isReset ? store.delete(key) : store.set(key, newValue)
@@ -24,7 +23,7 @@ const appStoreEffect: ElectronStoreEffect =
 // App
 export const isFallbackState = atom({
   key: "app/is-fallback",
-  default: false,
+  default: true,
 })
 
 export const draftFilepathState = atom({
@@ -68,14 +67,18 @@ export const selectedCharCountState = atom({
   default: 0,
 })
 
-export const displayCharCountState = atom({
-  key: "editor/display-char-count",
-  default: true,
-})
-
 export const isSavedState = atom({
   key: "editor/is-saved",
   default: true,
 })
 
 // View
+export const displayCharCountState = atom({
+  key: "editor/display-char-count",
+  default: true,
+})
+
+export const displayLineNumberState = atom({
+  key: "editor/display-line-number",
+  default: true,
+})
