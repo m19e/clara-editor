@@ -181,7 +181,7 @@ const LineNumber: FC<{ count: number }> = ({ count }) => {
 
   return (
     <div
-      className={`flex w-full flex-row-reverse transition-opacity ${opacity}`}
+      className={`flex w-full select-none flex-row-reverse transition-opacity ${opacity}`}
     >
       {labels.map((label, i) => (
         <span key={i} className="w-full text-center">
