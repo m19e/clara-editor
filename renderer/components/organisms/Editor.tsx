@@ -50,6 +50,7 @@ export const Editor: FC = () => {
   const [fs] = useFontSize()
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
+  const [displayLN] = useDisplayLineNumber()
   const [, setCharCount] = useCharCount()
   const [, setSelectedCharCount] = useSelectedCharCount()
 
@@ -83,12 +84,12 @@ export const Editor: FC = () => {
         updateLineNumCount(width)
       }
     )
-    editorRef.current && resizeObs.observe(editorRef.current)
+    editorRef.current && displayLN && resizeObs.observe(editorRef.current)
 
     return () => {
       resizeObs.disconnect()
     }
-  }, [editorRef])
+  }, [editorRef, displayLN])
 
   const handleWheel = (e: WheelEvent<HTMLElement>) => {
     if (scrollRef.current) {
