@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from "react"
+import { useRef, useState, useEffect, useCallback, useMemo } from "react"
 import type { ComponentProps, FC, WheelEvent } from "react"
 import { $getRoot, $getSelection, $isRangeSelection } from "lexical"
 import type { EditorState } from "lexical"
@@ -50,6 +50,7 @@ export const Editor: FC = () => {
   const [fs] = useFontSize()
   const [lh] = useLineHeight()
   const [lw] = useLineWords()
+  const [displayLN] = useDisplayLineNumber()
   const [, setCharCount] = useCharCount()
   const [, setSelectedCharCount] = useSelectedCharCount()
 
@@ -58,13 +59,14 @@ export const Editor: FC = () => {
 
   const [lineCount, setLineCount] = useState(1)
 
-  const updateLineNumCount = () => {
-    if (!editorRef.current) return
-    const rect = editorRef.current.getBoundingClientRect()
-    const lineWidth = 16 * fs * lh
-    const count = Math.round(rect.width / lineWidth)
-    setLineCount(count || 1)
-  }
+  const updateLineNumCount = useCallback(
+    (editorWidth: number) => {
+      const lineWidth = 16 * fs * lh
+      const count = Math.round(editorWidth / lineWidth)
+      setLineCount(count + 2)
+    },
+    [fs, lh]
+  )
 
   useEffect(() => {
     if (editorRef.current) {
@@ -76,8 +78,21 @@ export const Editor: FC = () => {
         `
       )
     }
-    updateLineNumCount()
   }, [fs, lh, lw])
+
+  useEffect(() => {
+    const resizeObs = new ResizeObserver(
+      (entries: ReadonlyArray<ResizeObserverEntry>) => {
+        const { width } = entries[0].contentRect
+        updateLineNumCount(width)
+      }
+    )
+    editorRef.current && displayLN && resizeObs.observe(editorRef.current)
+
+    return () => {
+      resizeObs.disconnect()
+    }
+  }, [editorRef, displayLN, updateLineNumCount])
 
   const handleWheel = (e: WheelEvent<HTMLElement>) => {
     if (scrollRef.current) {
@@ -98,7 +113,6 @@ export const Editor: FC = () => {
         setSelectedCharCount(0)
       }
     })
-    updateLineNumCount()
   }
 
   return (
@@ -156,8 +170,10 @@ export const Editor: FC = () => {
 }
 
 const LineNumber: FC<{ count: number }> = ({ count }) => {
+  const [fs] = useFontSize()
+  const [lh] = useLineHeight()
   const [display] = useDisplayLineNumber()
-  const opacity = display ? "opacity-50" : "opacity-0"
+
   const labels = useMemo(
     () =>
       Array.from({ length: count }).map((_, i) => {
@@ -167,14 +183,28 @@ const LineNumber: FC<{ count: number }> = ({ count }) => {
       }),
     [count]
   )
+  const opacity = display ? "opacity-50" : "opacity-0"
 
   return (
-    <div className={`flex w-full flex-row-reverse ${opacity}`}>
-      {labels.map((label, i) => (
-        <span key={i} className="w-full text-center">
-          {label}
-        </span>
-      ))}
+    <div
+      className="relative overflow-x-hidden"
+      style={{ height: `calc(${fs}rem * ${lh})` }}
+    >
+      <div
+        className={`absolute top-0 right-0 flex select-none flex-row-reverse transition-opacity ${opacity}`}
+      >
+        {labels.map((label, i) => (
+          <div
+            key={i}
+            className="flex w-full items-center justify-center"
+            style={{
+              width: `calc(${fs}rem * ${lh})`,
+            }}
+          >
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
