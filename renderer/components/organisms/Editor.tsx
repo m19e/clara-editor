@@ -194,15 +194,15 @@ const LineNumber: FC<{ count: number }> = ({ count }) => {
         className={`absolute top-0 right-0 flex select-none flex-row-reverse transition-opacity ${opacity}`}
       >
         {labels.map((label, i) => (
-          <span
+          <div
             key={i}
-            className="w-full text-center"
+            className="flex w-full items-center justify-center"
             style={{
               width: `calc(${fs}rem * ${lh})`,
             }}
           >
-            {label}
-          </span>
+            <span>{label}</span>
+          </div>
         ))}
       </div>
     </div>
