@@ -1,6 +1,6 @@
 appId: com.m19e.clara-lexical
 productName: Clara Editor
-artifactName: ${name}-${version}.${ext}
+artifactName: ${name}-${version}-${arch}.${ext}
 copyright: Copyright © 2022 m19e
 directories:
   output: dist
@@ -12,4 +12,10 @@ files:
       - app
 publish: null
 win:
+  icon: resources/clara_icon.png
+mac:
+  target: dmg
+  icon: resources/clara_icon.png
+linux:
+  target: AppImage
   icon: resources/clara_icon.png
