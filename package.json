@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "clara-editor-lexical",
+  "name": "clara-editor",
   "description": "Novel Editor with Vertical Typing",
   "version": "0.0.1",
   "author": "m19e",
