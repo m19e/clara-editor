@@ -52,6 +52,11 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           body: |
-            ## Test Release
+            ## 配布ファイル
+            |OS|インストーラ|
+            |-|-|
+            |Windows|clara-editor-${{ env.VERSION }}.exe|
+            |macOS|clara-editor-${{ env.VERSION }}.dmg|
+            |Liunx|clara-editor-${{ env.VERSION }}.AppImage|
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
