@@ -2,7 +2,7 @@
   "private": true,
   "name": "clara-editor",
   "description": "Novel Editor with Vertical Typing",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "m19e",
   "main": "app/background.js",
   "scripts": {
