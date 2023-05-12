@@ -13,7 +13,6 @@
     "build:win64": "nextron build --win --x64",
     "build:mac": "nextron build --mac --x64",
     "build:linux": "nextron build --linux",
-    "build:wml": "nextron build --win --x64 --mac --x64 --linux",
     "clean": "rimraf -g './dist/!(*.exe|*.deb|*.AppImage|*.dmg)' ./dist/.icon-ico",
     "postinstall": "electron-builder install-app-deps",
     "prepare": "husky install"
