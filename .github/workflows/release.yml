@@ -59,6 +59,6 @@ jobs:
             |-|-|
             |Windows|[.exe](https://github.com/${{ github.repository }}/releases/download/v${{ env.VERSION }}/clara-editor-${{ env.VERSION }}.exe)|
             |macOS|[.dmg](https://github.com/${{ github.repository }}/releases/download/v${{ env.VERSION }}/clara-editor-${{ env.VERSION }}.dmg)|
-            |Liunx|[.AppImage](https://github.com/${{ github.repository }}/releases/download/v${{ env.VERSION }}/clara-editor-${{ env.VERSION }}.AppImage)|
+            |Linux|[.AppImage](https://github.com/${{ github.repository }}/releases/download/v${{ env.VERSION }}/clara-editor-${{ env.VERSION }}.AppImage)|
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
