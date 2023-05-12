@@ -55,8 +55,8 @@ jobs:
             ## 配布ファイル
             |OS|インストーラ|
             |-|-|
-            |Windows|clara-editor-${{ env.VERSION }}.exe|
-            |macOS|clara-editor-${{ env.VERSION }}.dmg|
-            |Liunx|clara-editor-${{ env.VERSION }}.AppImage|
+            |Windows|[.exe](https://github.com/m19e/clara-editor/releases/download/v${{ env.VERSION }}/clara-editor-${{ env.VERSION }}.exe)|
+            |macOS|[.dmg](https://github.com/m19e/clara-editor/releases/download/v${{ env.VERSION }}/clara-editor-${{ env.VERSION }}.dmg)|
+            |Liunx|[.AppImage](https://github.com/m19e/clara-editor/releases/download/v${{ env.VERSION }}/clara-editor-${{ env.VERSION }}.AppImage)|
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
