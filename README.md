@@ -1,6 +1,6 @@
 # Clara Editor
 
-クロスプラットフォームの縦書きテキストエディタ
+🖊️ クロスプラットフォームの縦書きテキストエディタ
 
 [![release](https://github.com/m19e/clara-editor/actions/workflows/release.yml/badge.svg)](https://github.com/m19e/clara-editor/actions/workflows/release.yml)
 ![GitHub all releases](https://img.shields.io/github/downloads/m19e/clara-editor/total)
