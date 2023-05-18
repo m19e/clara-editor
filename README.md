@@ -1,5 +1,3 @@
-# Clara Editor
-
 <p align="center">
   <img src="https://github.com/m19e/clara-editor/assets/49052459/3d41a940-c9d0-484b-8b42-9e302894310c" alt="ara">
 </p>
@@ -22,6 +20,8 @@
     <img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="LICENSE" />
   </a>
 </p>
+
+# Clara Editor
 
 <p align="center">
   <img src="https://github.com/m19e/clara-editor/assets/49052459/37499fce-2c47-4db2-8fb4-bb02ec212bf3" alt="demo" />
