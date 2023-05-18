@@ -5,6 +5,7 @@
 [![release](https://github.com/m19e/clara-editor/actions/workflows/release.yml/badge.svg)](https://github.com/m19e/clara-editor/actions/workflows/release.yml)
 ![GitHub all releases](https://img.shields.io/github/downloads/m19e/clara-editor/total)
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/m19e/clara-editor)](https://github.com/m19e/clara-editor/releases/latest)
+[![LICENSE](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
 
 ![top](https://github.com/m19e/clara-editor/assets/49052459/37499fce-2c47-4db2-8fb4-bb02ec212bf3)
 
